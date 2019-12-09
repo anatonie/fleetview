@@ -1,0 +1,11 @@
+{
+    "AppSyncApiName": "roninfleetview",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": "false",
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authroninfleetviewfef25259fef25259",
+            "Outputs.UserPoolId"
+        ]
+    }
+}

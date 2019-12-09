@@ -1,0 +1,5 @@
+type Ship @model @auth(rules: [{allow: owner}, {allow: groups, groups: ["admins"]}]) {
+	id: ID!
+	type: String
+    name: String
+}
