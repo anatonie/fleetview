@@ -65,12 +65,16 @@
 			"providerPlugin": "awscloudformation",
 			"output": {
 				"authConfig": {
-					"additionalAuthenticationProviders": [],
-					"defaultAuthentication": {
-						"authenticationType": "AMAZON_COGNITO_USER_POOLS",
-						"userPoolConfig": {
-							"userPoolId": "authroninfleetviewfef25259fef25259"
+					"additionalAuthenticationProviders": [
+						{
+							"authenticationType": "AMAZON_COGNITO_USER_POOLS",
+							"userPoolConfig": {
+								"userPoolId": "authroninfleetviewfef25259fef25259"
+							}
 						}
+					],
+					"defaultAuthentication": {
+						"authenticationType": "AWS_IAM"
 					}
 				}
 			}

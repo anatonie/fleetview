@@ -1,6 +1,6 @@
 {
     "identityPoolName": "roninfleetviewfef25259_identitypool_fef25259",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "roninffef25259",
     "userPoolName": "roninfleetviewfef25259_userpool_fef25259",
     "autoVerifiedAttributes": [
@@ -15,8 +15,8 @@
     "smsVerificationMessage": "Your verification code is {####}",
     "emailVerificationSubject": "Your verification code",
     "emailVerificationMessage": "Your verification code is {####}",
-    "defaultPasswordPolicy": false,
-    "passwordPolicyMinLength": 8,
+    "defaultPasswordPolicy": true,
+    "passwordPolicyMinLength": "6",
     "passwordPolicyCharacters": [],
     "requiredAttributes": [],
     "userpoolClientGenerateSecret": true,
