@@ -11,7 +11,7 @@ import Routes from '../routes';
 export default function Header(props) {
     const location = useLocation();
     return (
-        <Navbar bg="light" expand="lg">
+        <Navbar bg="dark" expand="lg" variant="dark">
             <Link to="/" className="navbar-brand">Ronin Defense</Link>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">

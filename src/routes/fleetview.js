@@ -3,11 +3,14 @@ import React, { useEffect, useState } from 'react';
 import * as OrgFleet from '../utilities/orgFleet';
 import { getModels } from '../utilities/fleetview';
 
-const scale = 2;
-
 export default function Fleetview() {
     const [models, setModels] = useState();
     const [fleet, setFleet] = useState();
+
+    let scale = 2;
+    const wrapperPadding = 10;
+    const maxWidth = window.innerWidth - (4 * wrapperPadding);
+
     useEffect(() => {
         getModels().then((res) => setModels(res));
         OrgFleet.listShips().then((res) => setFleet(res));
@@ -18,13 +21,7 @@ export default function Fleetview() {
     }
     return (
         <div>
-            <div
-                style={{
-                    padding: '1rem',
-                    maxWidth: '90%',
-                    margin: '0 auto'
-                }}
-            >
+            <div style={{padding: wrapperPadding + 'px', maxWidth: '90%'}}>
                 {fleet
                     .map((ship) => ({
                         ship: ship,
@@ -32,30 +29,40 @@ export default function Fleetview() {
                     }))
                     .filter(({model}) => model !== undefined)
                     .sort((a, b) => a.model.length > b.model.length ? -1 : 1)
-                    .map(({ship, model}, idx) => (
-                        <span
-                            key={idx}
-                            style={{
-                                // display: 'inline-block',
-                                float: 'left',
-                                width: `calc(${(scale * model.length)}px + 1rem)`,
-                                height: `calc(${(scale * model.beam)}px + 1rem)`,
-                                verticalAlign: 'middle'
-                            }}
-                        >
+                    .map(({ship, model}, idx) => {
+                        let width = scale * model.beam;
+                        let height = scale * model.length;
+                        if (idx === 0 && height > maxWidth) {
+                            scale = maxWidth / model.length;
+                            width = scale * model.beam;
+                            height = scale * model.length;
+                        }
+                        width = width + 'px';
+                        height = height + 'px';
+                        return (
+                            <span
+                                key={idx}
+                                style={{
+                                    float: 'left',
+                                    width: height,
+                                    height: width,
+                                    verticalAlign: 'middle',
+                                    margin: wrapperPadding + 'px'
+                                }}
+                            >
                             <img
                                 alt={model.name}
                                 src={model.fleetchartImage}
                                 style={{
-                                    height: (scale * model.length) + 'px',
-                                    width: (scale * model.beam) + 'px',
-                                    margin: '0.5rem',
+                                    height,
+                                    width,
                                     transform: 'rotate(90deg) translateX(-' + (scale * model.length) + 'px)',
                                     transformOrigin: 'bottom left'
                                 }}
                             />
                         </span>
-                    ))}
+                        )
+                    })}
             </div>
         </div>
     )
