@@ -12,7 +12,7 @@ export default {
     FLEETVIEW: {
         auth: false,
         path: '/fleet',
-        title: 'Fleetview',
+        title: 'Our Fleet',
         component: Fleetview
     },
     MANAGE: {
