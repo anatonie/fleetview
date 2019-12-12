@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import awsconfig from './aws-exports';
 import Header from './components/header';
 import Routes from './routes';
+import NotFound from './routes/notFound';
 
 Amplify.configure({
     ...awsconfig,
@@ -50,14 +51,17 @@ function App() {
                 <Header setAuthState={setAuthState} authState={authState}/>
                 {authState !== 'none' && authState !== 'signedIn' ? (
                     <Authenticator
-                        onStateChange={(authState) => setAuthState(authState)}
+                        onStateChange={(newState) => setAuthState(newState)}
                         signUpConfig={{hiddenDefaults: ['phone_number', 'email']}}
                     >
                         <SneakyPropsComponent/>
                     </Authenticator>
                 ) : (
                     <Switch>
-                        {Object.keys(Routes).map((route) => <Route key={Routes[route].path} exact={true} path={Routes[route].path} component={Routes[route].component}/>)}
+                        {Object.keys(Routes)
+                            .filter((route) => authState === 'signedIn' || !Routes[route].auth)
+                            .map((route) => <Route key={Routes[route].path} exact={true} path={Routes[route].path} component={Routes[route].component}/>)}
+                            <Route component={NotFound}/>
                     </Switch>
                 )}
             </Router>

@@ -1,6 +1,6 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { Auth } from 'aws-amplify';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useHistory } from 'react-router-dom';
 
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
@@ -9,7 +9,9 @@ import Button from 'react-bootstrap/Button';
 import Routes from '../routes';
 
 export default function Header(props) {
+    const [accountDropDown, setAccountDropDown] = useState(false);
     const location = useLocation();
+    const history = useHistory();
     return (
         <Navbar bg="dark" expand="lg" variant="dark">
             <Link to="/" className="navbar-brand">Ronin Defense</Link>
@@ -22,10 +24,27 @@ export default function Header(props) {
                 </Nav>
                 {props.authState === 'signedIn' ? (
                     <span style={{display: 'inherit'}}>
-                        <NavDropdown title="My account" id="basic-nav-dropdown">
-                            <Link to={Routes.MANAGE.path} className={`dropdown-item ${location.pathname === Routes.MANAGE.path ? 'active' : ''}`}>{Routes.MANAGE.title}</Link>
+                        <NavDropdown title="My account" id="basic-nav-dropdown" show={accountDropDown} onToggle={(show) => setAccountDropDown(show)}>
+                            <Link
+                                to={Routes.MANAGE.path}
+                                className={`dropdown-item ${location.pathname === Routes.MANAGE.path ? 'active' : ''}`}
+                                onClick={() => setAccountDropDown(false)}
+                            >
+                                {Routes.MANAGE.title}
+                            </Link>
                             <NavDropdown.Divider />
-                            <div onClick={() => Auth.signOut() && props.setAuthState('none')} className="dropdown-item">Logout</div>
+                            <div
+                                onClick={async () => {
+                                    await Auth.signOut();
+                                    props.setAuthState('none');
+                                    if (location.pathname !== '/') {
+                                        history.push('/');
+                                    }
+                                }}
+                                className="dropdown-item"
+                            >
+                                Logout
+                            </div>
                         </NavDropdown>
                     </span>
                 ) : (
