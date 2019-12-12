@@ -29,7 +29,7 @@ export default function Manage() {
     }
     return (
         <div>
-            <div style={{margin: '1rem 0'}}>
+            <div style={{margin: '1rem'}}>
                 <ButtonGroup>
                     <Button variant={view === VIEWS.TABLE ? 'primary' : 'secondary'} onClick={() => setView(VIEWS.TABLE)}>Table</Button>
                     <Button variant={view === VIEWS.MODELS ? 'primary' : 'secondary'} onClick={() => setView(VIEWS.MODELS)}>Models</Button>
