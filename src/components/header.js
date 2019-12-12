@@ -15,7 +15,12 @@ export default function Header(props) {
     const history = useHistory();
     return (
         <Navbar bg="dark" expand="sm" variant="dark">
-            <Link to="/" className={`navbar-brand ${location.pathname === Routes.HOME.path && 'text-primary'}`}>{Constants.OrgName}</Link>
+            <Link
+                to="/"
+                className={`navbar-brand ${location.pathname === Routes.HOME.path && 'text-primary'}`}
+            >
+                {Constants.OrgName}
+            </Link>
             <Nav className="mr-auto">
                 <Nav.Item className={location.pathname === Routes.FLEETVIEW.path ? 'active' : undefined}>
                     <Link to={Routes.FLEETVIEW.path} className="nav-link">{Routes.FLEETVIEW.title}</Link>
@@ -26,14 +31,24 @@ export default function Header(props) {
                 <Nav className="mr-auto"/>
                 {props.authState === 'signedIn' ? (
                     <span style={{display: 'inherit'}}>
-                        <NavDropdown title="My account" id="basic-nav-dropdown" show={accountDropDown} onToggle={(show) => setAccountDropDown(show)}>
-                            <Link
-                                to={Routes.MANAGE.path}
-                                className={`dropdown-item ${location.pathname === Routes.MANAGE.path ? 'active' : ''}`}
-                                onClick={() => setAccountDropDown(false)}
-                            >
-                                {Routes.MANAGE.title}
-                            </Link>
+                        <NavDropdown
+                            title="My Account"
+                            id="basic-nav-dropdown"
+                            show={accountDropDown}
+                            onToggle={(show) => setAccountDropDown(show)}
+                        >
+                            {Object.keys(Routes).filter((key) => Routes[key].account === true).map((key) => (
+                                <Link
+                                    key={key}
+                                    to={Routes[key].path}
+                                    className={
+                                        `dropdown-item ${location.pathname === Routes[key].path ? 'active' : ''}`
+                                    }
+                                    onClick={() => setAccountDropDown(false)}
+                                >
+                                    {Routes[key].title}
+                                </Link>
+                            ))}
                             <NavDropdown.Divider />
                             <div
                                 onClick={async () => {

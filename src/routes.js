@@ -15,10 +15,11 @@ export default {
         title: 'Our Fleet',
         component: Fleetview
     },
-    MANAGE: {
+    MANAGE_FLEET: {
+        account: true,
         auth: true,
         path: '/manage',
-        title: 'My fleet',
+        title: 'My Fleet',
         component: Manage
     }
 }
