@@ -8,17 +8,7 @@ import Header from './components/header';
 import Routes from './routes';
 import NotFound from './routes/notFound';
 
-Amplify.configure({
-    ...awsconfig,
-    // graphql_headers: async () => {
-    //     try {
-    //         const currentSession = await Auth.currentSession();
-    //         return { Authorization: currentSession.getIdToken().getJwtToken() };
-    //     } catch (e) {
-    //         swallow, user not logged in
-        // }
-    // }
-});
+Amplify.configure(awsconfig);
 
 document.title = 'Ronin Defense';
 

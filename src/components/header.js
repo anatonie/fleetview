@@ -13,7 +13,7 @@ export default function Header(props) {
     const location = useLocation();
     const history = useHistory();
     return (
-        <Navbar bg="dark" expand="lg" variant="dark">
+        <Navbar bg="dark" expand="sm" variant="dark">
             <Link to="/" className="navbar-brand">Ronin Defense</Link>
             <Nav className="mr-auto">
                 <Nav.Item className={location.pathname === Routes.FLEETVIEW.path ? 'active' : undefined}>

@@ -11,6 +11,7 @@ export default function Manage() {
     const [fleet, setFleet] = useState();
     const [modalState, setModalState] = useState(false);
     const [manufacturers, setManufacturers] = useState([]);
+    const [updateShip, setUpdateShip] = useState({});
     useEffect(() => {
         getModels().then((res) => setModels(res)).then(() => setManufacturers(getManufacturers()));
         OrgFleet.listMyShips().then((res) => setFleet(res));
@@ -27,7 +28,7 @@ export default function Manage() {
                         <td>#</td>
                         <td>Ship</td>
                         <td>Name</td>
-                        <td>Actions</td>
+                        <td style={{textAlign: 'center'}}>Actions</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -36,23 +37,46 @@ export default function Manage() {
                             <td>{idx + 1}</td>
                             <td>{ship.type}</td>
                             <td>{ship.name}</td>
-                            <td>
-                                <span style={{marginRight: '1rem'}} onClick={() => {
-                                    OrgFleet.deleteShip(ship.id).then(() => OrgFleet.listShips()).then((res) => setFleet(res))
-                                }}>X</span>
-                                <span>U</span>
+                            <td style={{textAlign: 'center'}}>
+                                <span
+                                    style={{marginRight: '1rem'}}
+                                    onClick={() => OrgFleet
+                                        .deleteShip(ship.id)
+                                        .then(() => OrgFleet.listShips())
+                                        .then((res) => setFleet(res))}
+                                >
+                                    X
+                                </span>
+                                <span
+                                    onClick={() => {
+                                        setUpdateShip({
+                                            id: ship.id,
+                                            ship: ship.type,
+                                            name: ship.name,
+                                            manufacturer: models.find((model) => model.name === ship.type).manufacturer.name
+                                        });
+                                        setModalState(true);
+                                    }}
+                                >
+                                    U
+                                </span>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </Table>
             {modalState && <NewShipModal
+                {...updateShip}
                 close={() => setModalState(false)}
                 models={models}
                 manufacturers={manufacturers}
-                onSave={(ship, name) => {
+                onSave={(ship, name, id) => {
                     setModalState(false);
-                    OrgFleet.createShip(ship, name).then(() => OrgFleet.listShips()).then((res) => setFleet(res))
+                    if (id) {
+                        OrgFleet.updateShip(id, ship, name).then(() => OrgFleet.listMyShips()).then((res) => setFleet(res))
+                    } else {
+                        OrgFleet.createShip(ship, name).then(() => OrgFleet.listMyShips()).then((res) => setFleet(res))
+                    }
                 }}
             />}
             <Button onClick={() => setModalState(true)}>Add new ship</Button>
