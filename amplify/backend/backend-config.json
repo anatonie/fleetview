@@ -36,6 +36,11 @@
 					]
 				}
 			]
+		},
+		"roninfleetviewf3a46883": {
+			"service": "Lambda",
+			"providerPlugin": "awscloudformation",
+			"build": true
 		}
 	},
 	"api": {
@@ -78,6 +83,20 @@
 					}
 				}
 			}
+		},
+		"apie2d7ff2b": {
+			"service": "API Gateway",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": [
+				{
+					"category": "function",
+					"resourceName": "roninfleetviewf3a46883",
+					"attributes": [
+						"Name",
+						"Arn"
+					]
+				}
+			]
 		}
 	}
 }

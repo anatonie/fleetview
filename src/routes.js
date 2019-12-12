@@ -1,17 +1,24 @@
+import Home from './routes/home';
 import Fleetview from './routes/fleetview';
 import Manage from './routes/manage';
 
 export default {
-    FLEETVIEW: {
+    HOME: {
         auth: false,
         path: '/',
+        title: 'Home',
+        component: Home
+    },
+    FLEETVIEW: {
+        auth: false,
+        path: '/fleet',
         title: 'Fleetview',
         component: Fleetview
     },
     MANAGE: {
         auth: true,
         path: '/manage',
-        title: 'Manage',
+        title: 'My fleet',
         component: Manage
     }
 }

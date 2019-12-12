@@ -1,0 +1,34 @@
+{
+    "paths": [
+        {
+            "name": "/describe-org",
+            "lambdaFunction": "roninfleetviewf3a46883",
+            "privacy": {
+                "open": true
+            }
+        }
+    ],
+    "resourceName": "apie2d7ff2b",
+    "apiName": "apie2d7ff2b",
+    "functionArns": [
+        {
+            "lambdaFunction": "roninfleetviewf3a46883"
+        }
+    ],
+    "privacy": {
+        "auth": 0,
+        "unauth": 0,
+        "authRoleName": "amplify-roninfleetview-dev-163907-authRole",
+        "unAuthRoleName": "amplify-roninfleetview-dev-163907-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "roninfleetviewf3a46883",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        }
+    ]
+}

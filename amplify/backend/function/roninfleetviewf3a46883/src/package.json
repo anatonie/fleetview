@@ -1,0 +1,19 @@
+{
+  "name": "roninfleetviewf3a46883",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "aws-serverless-express": "^3.3.5",
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "node-fetch": "^2.6.0",
+    "node-html-parser": "^1.1.16"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
