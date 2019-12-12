@@ -10,14 +10,14 @@ import NotFound from './routes/notFound';
 
 Amplify.configure({
     ...awsconfig,
-    graphql_headers: async () => {
-        try {
-            const currentSession = await Auth.currentSession();
-            return { Authorization: currentSession.getIdToken().getJwtToken() };
-        } catch (e) {
-            // swallow, user not logged in
-        }
-    }
+    // graphql_headers: async () => {
+    //     try {
+    //         const currentSession = await Auth.currentSession();
+    //         return { Authorization: currentSession.getIdToken().getJwtToken() };
+    //     } catch (e) {
+    //         swallow, user not logged in
+        // }
+    // }
 });
 
 document.title = 'Ronin Defense';

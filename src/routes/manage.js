@@ -32,7 +32,7 @@ export default function Manage() {
                 </thead>
                 <tbody>
                     {fleet.map((ship, idx) => (
-                        <tr key={idx}>
+                        <tr key={idx} className={idx % 2 ? 'table-active' : undefined}>
                             <td>{idx + 1}</td>
                             <td>{ship.type}</td>
                             <td>{ship.name}</td>
