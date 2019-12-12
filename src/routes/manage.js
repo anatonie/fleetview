@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup'
 
 import NewShipModal from '../components/newShip';
 import * as OrgFleet from '../utilities/orgFleet';
 import { getModels, getManufacturers } from '../utilities/fleetview';
+import ModelView from '../components/modelView';
 
+const VIEWS = {
+    TABLE: 'table',
+    MODELS: 'models'
+};
 export default function Manage() {
+    const [view, setView] = useState(VIEWS.TABLE);
     const [models, setModels] = useState();
     const [fleet, setFleet] = useState();
     const [modalState, setModalState] = useState(false);
@@ -22,7 +29,15 @@ export default function Manage() {
     }
     return (
         <div>
-            <Table responsive size="sm">
+            <div style={{margin: '1rem 0'}}>
+                <ButtonGroup>
+                    <Button variant={view === VIEWS.TABLE ? 'primary' : 'secondary'} onClick={() => setView(VIEWS.TABLE)}>Table</Button>
+                    <Button variant={view === VIEWS.MODELS ? 'primary' : 'secondary'} onClick={() => setView(VIEWS.MODELS)}>Models</Button>
+                </ButtonGroup>
+                <Button onClick={() => setModalState(true)} style={{float: 'right'}}>Add new ship</Button>
+            </div>
+            {view === VIEWS.MODELS && <ModelView fleet={fleet} models={models}/>}
+            {view === VIEWS.TABLE && <Table responsive size="sm">
                 <thead>
                     <tr>
                         <td>#</td>
@@ -64,7 +79,7 @@ export default function Manage() {
                         </tr>
                     ))}
                 </tbody>
-            </Table>
+            </Table>}
             {modalState && <NewShipModal
                 {...updateShip}
                 close={() => setModalState(false)}
@@ -79,7 +94,6 @@ export default function Manage() {
                     }
                 }}
             />}
-            <Button onClick={() => setModalState(true)}>Add new ship</Button>
         </div>
     );
 }
