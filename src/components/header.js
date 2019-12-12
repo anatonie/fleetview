@@ -7,6 +7,7 @@ import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Button from 'react-bootstrap/Button';
 import Routes from '../routes';
+import Constants from '../constants';
 
 export default function Header(props) {
     const [accountDropDown, setAccountDropDown] = useState(false);
@@ -14,7 +15,7 @@ export default function Header(props) {
     const history = useHistory();
     return (
         <Navbar bg="dark" expand="sm" variant="dark">
-            <Link to="/" className="navbar-brand">Ronin Defense</Link>
+            <Link to="/" className={`navbar-brand ${location.pathname === Routes.HOME.path && 'text-primary'}`}>{Constants.OrgName}</Link>
             <Nav className="mr-auto">
                 <Nav.Item className={location.pathname === Routes.FLEETVIEW.path ? 'active' : undefined}>
                     <Link to={Routes.FLEETVIEW.path} className="nav-link">{Routes.FLEETVIEW.title}</Link>

@@ -3,9 +3,21 @@ import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 
 import { getOrgInfo } from '../utilities/orgInfo';
+import Constants from '../constants';
 
 const processText = (text) => (
-    text.split('\n').map((line, idx) => <p key={idx}>{line}</p>)
+    text.split('\n').map((line, idx) =>
+        <p key={idx}>
+            {line
+                .split(Constants.OrgName)
+                .map((item, idx, arr) =>
+                    <span key={idx}>
+                        {item}
+                        {arr.length - 1 !== idx && <b className="text-primary">{Constants.OrgName}</b>}
+                        </span>
+                )}
+        </p>
+    )
 );
 export default function Home() {
     const [orgInfo, setOrgInfo] = useState();
