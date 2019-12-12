@@ -13,7 +13,7 @@ export default function Fleetview() {
     const [rotate, setRotate] = useState(false);
 
     const wrapperPadding = 10;
-    const maxWidth = window.innerWidth - (4 * wrapperPadding);
+    const maxWidth = (window.innerWidth * .9) - (4 * wrapperPadding);
 
     useEffect(() => {
         getModels().then((res) => setModels(res));
@@ -66,7 +66,7 @@ export default function Fleetview() {
                         let width = scale * model.beam;
                         let height = scale * model.length;
                         if (rotate && idx === 0 && height > maxWidth && scale === defaultScale) {
-                            scale = maxWidth / model.length;
+                            setScale(maxWidth / model.length);
                             width = scale * model.beam;
                             height = scale * model.length;
                         }
