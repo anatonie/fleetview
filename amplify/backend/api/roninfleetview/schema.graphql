@@ -1,10 +1,39 @@
 type Ship @model @auth(rules: [
-    {allow: owner, provider: userPools, ownerField: "owner", operations: [create, update, delete, read]},
+    {allow: owner, provider: userPools},
     {allow: groups, provider: userPools, groups: ["admins"]},
     {allow: public, provider: iam, operations: [read]}
-]) {
+]){
 	id: ID!
 	type: String
     name: String
     owner: String
+}
+
+type Event @model @auth(rules: [
+    {allow: groups, provider: userPools, groups: ["admins", "ops"]},
+    {allow: owner, provider: userPools, ownerField: "creator", operations: [update, delete]},
+    {allow: public, provider: iam, operations: [read]}
+]){
+    id: ID!
+    title: String!
+    description: String
+    date: Int
+    location: String
+    private: Boolean
+    creator: String
+    subscribers: [EventSubscriber] @connection(keyName: "byEvent", fields: ["id"])
+}
+
+type EventSubscriber @model
+    @key(name: "byEvent", fields: ["eventId", "user"])
+    @auth(rules: [
+    {allow: private, provider: userPools, operations: [create]},
+    {allow: owner, ownerField: "user", provider: userPools, operations: [update, delete]},
+    {allow: groups, provider: userPools, groups: ["admins"]},
+    {allow: public, provider: iam, operations: [read]}
+]){
+    id: ID!
+    user: String!
+    notify: Boolean @auth(rules: [{allow: owner, ownerField: "user"}])
+    eventId: ID!
 }

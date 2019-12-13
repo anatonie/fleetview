@@ -26,3 +26,62 @@ export const listShips = `query ListShips(
   }
 }
 `;
+export const getEvent = `query GetEvent($id: ID!) {
+  getEvent(id: $id) {
+    id
+    title
+    description
+    date
+    location
+    private
+    creator
+    subscribers {
+      nextToken
+    }
+  }
+}
+`;
+export const listEvents = `query ListEvents(
+  $filter: ModelEventFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listEvents(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      title
+      description
+      date
+      location
+      private
+      creator
+    }
+    nextToken
+  }
+}
+`;
+export const getEventSubscriber = `query GetEventSubscriber($id: ID!) {
+  getEventSubscriber(id: $id) {
+    id
+    user
+    eventId
+    notify
+  }
+}
+`;
+export const listEventSubscribers = `query ListEventSubscribers(
+  $filter: ModelEventSubscriberFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listEventSubscribers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      user
+      eventId
+      notify
+    }
+    nextToken
+  }
+}
+`;
