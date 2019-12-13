@@ -14,16 +14,15 @@ export default function NewShip(props) {
             </Modal.Header>
 
             <Modal.Body>
-                <p>Modal body text goes here.</p>
-                <Form.Control as="select" value={manufacturer} onChange={(event) => setManufacturer(event.target.value)}>
+                <Form.Control as="select" value={manufacturer} onChange={(event) => setManufacturer(event.target.value)} style={{marginBottom: '1rem'}}>
                     <option disabled={true} value="none">Select manufacturer</option>
                     {props.manufacturers.map((name) => <option key={name} value={name}>{name}</option>)}
                 </Form.Control>
-                <Form.Control as="select" disabled={manufacturer === 'none'} value={ship} onChange={(event) => setShip(event.target.value)}>
+                <Form.Control as="select" disabled={manufacturer === 'none'} value={ship} onChange={(event) => setShip(event.target.value)} style={{marginBottom: '1rem'}}>
                     <option disabled={true} value="none">Select ship</option>
                     {props.models.filter(({manufacturer: manu}) => manu.name === manufacturer).map((model) => <option key={model.name} value={model.name}>{model.name}</option>)}
                 </Form.Control>
-                <Form.Control placeholder="Ship name (optional)" value={name} onChange={(event) => setName(event.target.value)}/>
+                <Form.Control placeholder="Ship name (optional)" value={name} onChange={(event) => setName(event.target.value)} style={{marginBottom: '1rem'}}/>
             </Modal.Body>
 
             <Modal.Footer>

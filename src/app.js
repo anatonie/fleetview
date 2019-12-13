@@ -9,6 +9,8 @@ import Footer from './components/footer';
 import Routes from './routes';
 import NotFound from './routes/notFound';
 
+import AuthComponents from './components/auth';
+
 Amplify.configure(awsconfig);
 
 document.title = 'Ronin Defense';
@@ -40,21 +42,20 @@ function App() {
         <div className="App" style={{marginBottom: '54px'}}>
             <Router>
                 <Header setAuthState={setAuthState} authState={authState}/>
-                {authState !== 'none' && authState !== 'signedIn' ? (
-                    <Authenticator
-                        onStateChange={(newState) => setAuthState(newState)}
-                        signUpConfig={{hiddenDefaults: ['phone_number', 'email']}}
-                    >
-                        <SneakyPropsComponent/>
-                    </Authenticator>
-                ) : (
-                    <Switch>
-                        {Object.keys(Routes)
-                            .filter((route) => authState === 'signedIn' || !Routes[route].auth)
-                            .map((route) => <Route key={Routes[route].path} exact={true} path={Routes[route].path} component={Routes[route].component}/>)}
-                            <Route component={NotFound}/>
-                    </Switch>
-                )}
+                <Authenticator
+                    onStateChange={(newState) => newState === 'signIn' && authState === 'none' ? undefined : setAuthState(newState)}
+                    signUpConfig={{hiddenDefaults: ['phone_number', 'email']}}
+                    hideDefault={true}
+                >
+                    <SneakyPropsComponent/>
+                    <AuthComponents setAuthState={setAuthState} currentAuthState={authState}/>
+                </Authenticator>
+                <Switch>
+                    {Object.keys(Routes)
+                        .filter((route) => authState === 'signedIn' || !Routes[route].auth)
+                        .map((route) => <Route key={Routes[route].path} exact={true} path={Routes[route].path} component={Routes[route].component}/>)}
+                    <Route component={NotFound}/>
+                </Switch>
                 <Footer/>
             </Router>
         </div>
