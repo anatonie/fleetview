@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import awsconfig from './aws-exports';
 import Header from './components/header';
+import Footer from './components/footer';
 import Routes from './routes';
 import NotFound from './routes/notFound';
 
@@ -54,6 +55,7 @@ function App() {
                             <Route component={NotFound}/>
                     </Switch>
                 )}
+                <Footer/>
             </Router>
         </div>
     );
