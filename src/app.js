@@ -37,7 +37,7 @@ function App() {
         }
     }, [authState]);
     return (
-        <div className="App">
+        <div className="App" style={{marginBottom: '54px'}}>
             <Router>
                 <Header setAuthState={setAuthState} authState={authState}/>
                 {authState !== 'none' && authState !== 'signedIn' ? (
