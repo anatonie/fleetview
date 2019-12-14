@@ -5,17 +5,38 @@ import Tab from 'react-bootstrap/Tab';
 import { getOrgInfo } from '../utilities/orgInfo';
 import Constants from '../constants';
 
+const discordLink = 'https://discord';
+const proccessEnlistLink = (text) => {
+    if (text.indexOf(discordLink) >= 0) {
+        return text.split('. ').map((item, idx) => {
+            if (item.indexOf(discordLink) >= 0) {
+                const split = item.split(discordLink);
+                return <a
+                    key={idx}
+                    href={Constants.DiscordInviteLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    {split[0].replace(/(:|\s$)/g, '')}!
+                </a>
+            }
+            return item + '. ';
+        })
+    }
+    return text;
+};
 const processText = (text) => (
     text.split('\n').map((line, idx) =>
         <p key={idx}>
             {line
                 .split(Constants.OrgName)
-                .map((item, idx, arr) =>
+                .map((item, idx, arr) => (
                     <span key={idx}>
-                        {item}
+                        {proccessEnlistLink(item)}
                         {arr.length - 1 !== idx && <b className="text-primary">{Constants.OrgName}</b>}
-                        </span>
-                )}
+                    </span>
+                ))
+            }
         </p>
     )
 );
