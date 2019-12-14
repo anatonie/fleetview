@@ -12,7 +12,7 @@ export default function Footer() {
                     <Nav.Link href={Constants.DiscordInviteLink} target="_blank">Join us on Discord</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                    <Nav.Link href={Constants.OrgLink} target="_blank">Apply Today</Nav.Link>
+                    <Nav.Link href={Constants.OrgLink} target="_blank">Enlist Today</Nav.Link>
                 </Nav.Item>
             </Nav>
         </Navbar>
