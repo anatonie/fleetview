@@ -16,6 +16,7 @@ const proccessEnlistLink = (text) => {
                     href={Constants.DiscordInviteLink}
                     target="_blank"
                     rel="noopener noreferrer"
+                    className="anchor"
                 >
                     {split[0].replace(/(:|\s$)/g, '')}!
                 </a>
