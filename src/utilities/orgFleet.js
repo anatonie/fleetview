@@ -2,10 +2,19 @@ import { API, graphqlOperation, Auth } from 'aws-amplify';
 import * as queries from '../graphql/queries';
 import * as mutations from '../graphql/mutations';
 
-const buildCognitoAuthParams = (op, params) => ({
-    ...graphqlOperation(op, params),
-    authMode: 'AMAZON_COGNITO_USER_POOLS'
-});
+const buildCognitoAuthParams = async (op, params) => {
+    let auth = false;
+    try {
+        await Auth.currentUserInfo();
+        auth = true;
+    } catch (e) {
+        // swallow
+    }
+    return {
+        ...graphqlOperation(op, params),
+        ...(auth ? {authMode: 'AMAZON_COGNITO_USER_POOLS'} : {})
+    }
+};
 
 const getPaginatedApi = async (getParams) => {
     let nextToken;
@@ -19,7 +28,7 @@ const getPaginatedApi = async (getParams) => {
         }
     };
     do {
-        const {data} = await API.graphql(getParams(nextToken));
+        const {data} = await API.graphql(await getParams(nextToken));
         const keys = Object.keys(data);
         nextToken = data[keys].nextToken;
         keys.forEach(getCombineItems(data));
@@ -27,7 +36,7 @@ const getPaginatedApi = async (getParams) => {
     return items;
 };
 
-export const listShips = () => getPaginatedApi((nextToken) => graphqlOperation(queries.listShips, {nextToken}));
+export const listShips = () => getPaginatedApi((nextToken) => buildCognitoAuthParams(queries.listShips, {nextToken}));
 
 export const listMyShips = async () => {
     const {username} = await Auth.currentUserInfo();

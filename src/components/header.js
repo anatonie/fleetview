@@ -22,9 +22,15 @@ export default function Header(props) {
                 {Constants.OrgName}
             </Link>
             <Nav className="mr-auto">
-                <Nav.Item className={location.pathname === Routes.FLEETVIEW.path ? 'active' : undefined}>
-                    <Link to={Routes.FLEETVIEW.path} className="nav-link">{Routes.FLEETVIEW.title}</Link>
-                </Nav.Item>
+                {Object.keys(Routes)
+                    .filter((key) => (Routes[key].account !== true && Routes[key].hide !== true) && (props.authState === 'signedIn' || !Routes[key].auth) && ((Routes[key].admin === true && props.admin) || Routes[key].admin !== true))
+                    .map((key) => (
+                        <Nav.Item className={location.pathname === Routes[key].path ? 'active' : undefined} key={key}>
+                            <Link to={Routes[key].path} className="nav-link">
+                                {Routes[key].title}
+                            </Link>
+                        </Nav.Item>
+                ))}
             </Nav>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
@@ -37,7 +43,10 @@ export default function Header(props) {
                             show={accountDropDown}
                             onToggle={(show) => setAccountDropDown(show)}
                         >
-                            {Object.keys(Routes).filter((key) => Routes[key].account === true).map((key) => (
+                            {Object
+                                //
+                                .keys(Routes).filter((key) => Routes[key].account === true && (props.authState === 'signedIn' || !Routes[key].auth) && ((Routes[key].admin === true && props.admin) || Routes[key].admin !== true))
+                                .map((key) => (
                                 <Link
                                     key={key}
                                     to={Routes[key].path}

@@ -10,6 +10,7 @@ import Routes from './routes';
 import NotFound from './routes/notFound';
 
 import AuthComponents from './components/auth';
+import OrgApi from './utilities/orgApi';
 
 Amplify.configure(awsconfig);
 
@@ -23,12 +24,17 @@ function SneakyPropsComponent(props) {
 }
 
 function App() {
-    const [authState, setAuthState] = useState('none');
+    const [authState, setAuthState] = useState();
+    const [admin, setAdmin] = useState();
     useEffect(() => {
         const checkCreds = async () => {
             const creds = await Auth.currentUserInfo();
             if (creds) {
                 setAuthState('signedIn');
+                const isAdmin = await OrgApi.checkAdmin();
+                setAdmin(isAdmin);
+            } else {
+                setAuthState('none');
             }
         };
         checkCreds();
@@ -41,7 +47,7 @@ function App() {
     return (
         <div className="App" style={{marginBottom: '54px'}}>
             <Router>
-                <Header setAuthState={setAuthState} authState={authState}/>
+                <Header setAuthState={setAuthState} authState={authState} admin={admin}/>
                 <Authenticator
                     onStateChange={(newState) => newState === 'signIn' && authState === 'none' ? undefined : setAuthState(newState)}
                     signUpConfig={{hiddenDefaults: ['phone_number', 'email']}}
@@ -52,7 +58,7 @@ function App() {
                 </Authenticator>
                 <Switch>
                     {Object.keys(Routes)
-                        .filter((route) => authState === 'signedIn' || !Routes[route].auth)
+                        .filter((key) => (authState === 'signedIn' || !Routes[key].auth) && ((Routes[key].admin === true && admin) || Routes[key].admin !== true))
                         .map((route) => <Route key={Routes[route].path} exact={true} path={Routes[route].path} component={Routes[route].component}/>)}
                     <Route component={NotFound}/>
                 </Switch>

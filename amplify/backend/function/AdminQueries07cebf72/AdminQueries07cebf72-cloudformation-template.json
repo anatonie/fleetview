@@ -52,7 +52,8 @@
 						"ENV": {
 							"Ref": "env"
 						},
-						"GROUP": "admins",
+						"ADMIN_GROUP": "admins",
+						"OPS_GROUP": "ops",
 						"USERPOOL": {
 							"Ref": "authroninfleetviewfef25259fef25259UserPoolId"
 						}
@@ -68,7 +69,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-roninfleetview-dev-163907-deployment",
-					"S3Key": "amplify-builds/AdminQueries07cebf72-3933524435306a543039-build.zip"
+					"S3Key": "amplify-builds/AdminQueries07cebf72-416f4f502b4943395257-build.zip"
 				}
 			}
 		},

@@ -1,9 +1,11 @@
 import Home from './routes/home';
 import Fleetview from './routes/fleetview';
 import Manage from './routes/manage';
+import FleetOverview from './routes/fleetOverview';
 
 export default {
     HOME: {
+        hide: true,
         auth: false,
         path: '/',
         title: 'Home',
@@ -21,5 +23,12 @@ export default {
         path: '/manage',
         title: 'My Fleet',
         component: Manage
+    },
+    FLEET_OVERVIEW: {
+        admin: true,
+        account: true,
+        path: '/admin/overview',
+        title: 'Fleet overview',
+        component: FleetOverview
     }
 }
