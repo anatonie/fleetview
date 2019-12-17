@@ -5,8 +5,8 @@ import * as mutations from '../graphql/mutations';
 const buildCognitoAuthParams = async (op, params) => {
     let auth = false;
     try {
-        await Auth.currentUserInfo();
-        auth = true;
+        const result = await Auth.currentUserInfo();
+        auth = !!result;
     } catch (e) {
         // swallow
     }
@@ -28,7 +28,8 @@ const getPaginatedApi = async (getParams) => {
         }
     };
     do {
-        const {data} = await API.graphql(await getParams(nextToken));
+        const params = await getParams(nextToken);
+        const {data} = await API.graphql(params);
         const keys = Object.keys(data);
         nextToken = data[keys].nextToken;
         keys.forEach(getCombineItems(data));
