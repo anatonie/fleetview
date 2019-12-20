@@ -2,6 +2,7 @@ import Home from './routes/home';
 import Fleetview from './routes/fleetview';
 import Manage from './routes/manage';
 import FleetOverview from './routes/fleetOverview';
+import Events from './routes/events';
 
 export default {
     HOME: {
@@ -30,5 +31,11 @@ export default {
         path: '/admin/overview',
         title: 'Fleet overview',
         component: FleetOverview
+    },
+    EVENTS: {
+        admin: true,
+        path: '/events',
+        title: 'Events',
+        component: Events
     }
 }

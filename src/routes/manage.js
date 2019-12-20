@@ -1,28 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
-import ButtonGroup from 'react-bootstrap/ButtonGroup'
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import { connect } from 'react-redux'
 
 import NewShipModal from '../components/newShip';
 import * as OrgFleet from '../utilities/orgFleet';
-import { getModels, getManufacturers } from '../utilities/fleetview';
 import ModelView from '../components/modelView';
 
 const VIEWS = {
     TABLE: 'table',
     MODELS: 'models'
 };
-export default function Manage() {
+function Manage(props) {
+    const {
+        fleet,
+        models,
+        manufacturers
+    } = props;
     const [view, setView] = useState(VIEWS.TABLE);
-    const [models, setModels] = useState();
-    const [fleet, setFleet] = useState();
     const [modalState, setModalState] = useState(false);
-    const [manufacturers, setManufacturers] = useState([]);
     const [updateShip, setUpdateShip] = useState({});
-    useEffect(() => {
-        getModels().then((res) => setModels(res)).then(() => setManufacturers(getManufacturers()));
-        OrgFleet.listMyShips().then((res) => setFleet(res));
-    }, []);
     const loading = !(!!fleet && !!models);
     if (loading) {
         return <div>Loading...</div>
@@ -55,10 +53,7 @@ export default function Manage() {
                             <td style={{textAlign: 'center'}}>
                                 <span
                                     style={{marginRight: '1rem'}}
-                                    onClick={() => OrgFleet
-                                        .deleteShip(ship.id)
-                                        .then(() => OrgFleet.listShips())
-                                        .then((res) => setFleet(res))}
+                                    onClick={() => OrgFleet.deleteShip(ship.id)}
                                 >
                                     X
                                 </span>
@@ -88,12 +83,14 @@ export default function Manage() {
                 onSave={(ship, name, id) => {
                     setModalState(false);
                     if (id) {
-                        OrgFleet.updateShip(id, ship, name).then(() => OrgFleet.listMyShips()).then((res) => setFleet(res))
+                        OrgFleet.updateShip(id, ship, name)
                     } else {
-                        OrgFleet.createShip(ship, name).then(() => OrgFleet.listMyShips()).then((res) => setFleet(res))
+                        OrgFleet.createShip(ship, name)
                     }
                 }}
             />}
         </div>
     );
 }
+
+export default connect((state) => ({fleet: state.myFleet, models: state.models, manufacturers: state.manufacturers, fleetSize: (state.myFleet ? state.myFleet : []).length}), {})(Manage);

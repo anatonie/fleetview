@@ -1,19 +1,13 @@
-import { API, graphqlOperation, Auth } from 'aws-amplify';
+import { API, graphqlOperation } from 'aws-amplify';
 import * as queries from '../graphql/queries';
 import * as mutations from '../graphql/mutations';
+import store from './store';
 
-const buildParams = async (op, params, auth = false) => {
-    if (!auth) {
-        try {
-            const result = await Auth.currentUserInfo();
-            auth = !!result;
-        } catch (e) {
-            // swallow
-        }
-    }
+const buildParams = (op, params, auth = false) => {
+    const {username} = store.getState();
     return {
         ...graphqlOperation(op, params),
-        ...(auth ? {authMode: 'AMAZON_COGNITO_USER_POOLS'} : {})
+        ...(auth || username ? {authMode: 'AMAZON_COGNITO_USER_POOLS'} : {})
     }
 };
 
@@ -29,7 +23,7 @@ const getPaginatedApi = async (getParams) => {
         }
     };
     do {
-        const params = await getParams(nextToken);
+        const params = getParams(nextToken);
         const {data} = await API.graphql(params);
         const keys = Object.keys(data);
         nextToken = data[keys].nextToken;
@@ -40,19 +34,14 @@ const getPaginatedApi = async (getParams) => {
 
 export const listShips = () => getPaginatedApi((nextToken) => buildParams(queries.listShips, {nextToken}));
 
-export const listMyShips = async () => {
-    const {username} = await Auth.currentUserInfo();
-    return getPaginatedApi((nextToken) =>
-        buildParams(queries.listShips, {filter: {owner: {eq: username}}, nextToken}, true));
-};
+export const createShip = (type, name) => API.graphql(buildParams(mutations.createShip, {input: {name, type}}, true));
 
-export const createShip = async (type, name) => {
-    const res = await API.graphql(await buildParams(mutations.createShip, {input: {name, type}}, true));
-    return res.data.createShip;
-};
+export const updateShip = (id, type, name) => API.graphql(buildParams(mutations.updateShip, {input: {id, type, name}}, true));
 
-export const updateShip = (id, type, name) => buildParams(mutations.updateShip, {input: {id, type, name}}, true)
-    .then((params) => API.graphql(params));
+export const deleteShip = (id) => API.graphql(buildParams(mutations.deleteShip, {input: {id}}, true));
 
-export const deleteShip = (id) => buildParams(mutations.deleteShip, {input: {id}}, true)
-    .then((params) => API.graphql(params));
+export const listEvents = () => getPaginatedApi((nextToken) => buildParams(queries.listEvents, {nextToken}));
+
+export const createEvent = (event) => API.graphql(buildParams(mutations.createEvent, {input: event}, true));
+
+export const updateEvent = (event) => API.graphql(buildParams(mutations.updateEvent, {input: event}, true));

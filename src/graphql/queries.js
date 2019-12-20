@@ -33,7 +33,7 @@ export const getEvent = `query GetEvent($id: ID!) {
     description
     date
     location
-    private
+    orgOnly
     creator
     subscribers {
       nextToken
@@ -53,7 +53,7 @@ export const listEvents = `query ListEvents(
       description
       date
       location
-      private
+      orgOnly
       creator
     }
     nextToken

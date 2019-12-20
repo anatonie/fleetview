@@ -1,15 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { connect } from 'react-redux';
 import Table from 'react-bootstrap/Table';
 
-import * as OrgFleet from '../utilities/orgFleet';
-
-export default function FleetOverview() {
-    const [fleet, setFleet] = useState();
-    useEffect(() => {
-        OrgFleet.listShips()
-            .then((res) => res.sort((a, b) => a.owner[0].toLowerCase() > b.owner[0].toLowerCase() ? 1 : -1))
-            .then((res) => setFleet(res));
-    }, []);
+function FleetOverview(props) {
+    const {fleet} = props;
     if (!fleet) {
         return <div>Loading...</div>
     }
@@ -38,3 +32,8 @@ export default function FleetOverview() {
         </div>
     );
 }
+
+export default connect((state) => ({
+    fleet: state.fleet,
+    fleetSize: (state.fleet ? state.fleet : []).length
+}), {})(FleetOverview);

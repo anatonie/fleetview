@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Auth } from 'aws-amplify';
 import { Link, useLocation, useHistory } from 'react-router-dom';
 
 import Navbar from 'react-bootstrap/Navbar';
@@ -61,8 +60,7 @@ export default function Header(props) {
                             <NavDropdown.Divider />
                             <div
                                 onClick={async () => {
-                                    await Auth.signOut();
-                                    props.setAuthState('none');
+                                    props.signOut();
                                     if (location.pathname !== '/') {
                                         history.push('/');
                                     }

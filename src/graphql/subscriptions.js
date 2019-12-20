@@ -1,8 +1,8 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateShip = `subscription OnCreateShip($owner: String) {
-  onCreateShip(owner: $owner) {
+export const onCreateShip = `subscription OnCreateShip {
+  onCreateShip {
     id
     type
     name
@@ -10,8 +10,8 @@ export const onCreateShip = `subscription OnCreateShip($owner: String) {
   }
 }
 `;
-export const onUpdateShip = `subscription OnUpdateShip($owner: String) {
-  onUpdateShip(owner: $owner) {
+export const onUpdateShip = `subscription OnUpdateShip {
+  onUpdateShip {
     id
     type
     name
@@ -19,8 +19,8 @@ export const onUpdateShip = `subscription OnUpdateShip($owner: String) {
   }
 }
 `;
-export const onDeleteShip = `subscription OnDeleteShip($owner: String) {
-  onDeleteShip(owner: $owner) {
+export const onDeleteShip = `subscription OnDeleteShip {
+  onDeleteShip {
     id
     type
     name
@@ -28,44 +28,14 @@ export const onDeleteShip = `subscription OnDeleteShip($owner: String) {
   }
 }
 `;
-export const onCreateEvent = `subscription OnCreateEvent {
-  onCreateEvent {
+export const onUpdateEvent = `subscription OnUpdateEvent {
+  onUpdateEvent {
     id
     title
     description
     date
     location
-    private
-    creator
-    subscribers {
-      nextToken
-    }
-  }
-}
-`;
-export const onUpdateEvent = `subscription OnUpdateEvent($creator: String) {
-  onUpdateEvent(creator: $creator) {
-    id
-    title
-    description
-    date
-    location
-    private
-    creator
-    subscribers {
-      nextToken
-    }
-  }
-}
-`;
-export const onDeleteEvent = `subscription OnDeleteEvent($creator: String) {
-  onDeleteEvent(creator: $creator) {
-    id
-    title
-    description
-    date
-    location
-    private
+    orgOnly
     creator
     subscribers {
       nextToken

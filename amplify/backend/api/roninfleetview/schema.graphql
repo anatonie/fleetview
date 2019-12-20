@@ -1,8 +1,8 @@
-type Ship @model @auth(rules: [
-    {allow: public, provider: iam, operations: [read]}
+type Ship @model(subscriptions: null) @auth(rules: [
     {allow: private, provider: userPools, operations: [read]},
     {allow: groups, provider: userPools, groups: ["admins"]},
     {allow: owner, provider: userPools},
+    {allow: public, provider: iam, operations: [read]}
 ]){
 	id: ID!
 	type: String
@@ -10,7 +10,7 @@ type Ship @model @auth(rules: [
     owner: String
 }
 
-type Event @model @auth(rules: [
+type Event @model(subscriptions: null) @auth(rules: [
     {allow: groups, provider: userPools, groups: ["admins", "ops"]},
     {allow: owner, provider: userPools, ownerField: "creator", operations: [update, delete]},
     {allow: public, provider: iam, operations: [read]},
@@ -18,11 +18,30 @@ type Event @model @auth(rules: [
     id: ID!
     title: String!
     description: String
-    date: Int
+    date: String
     location: String
-    private: Boolean
+    orgOnly: Boolean
     creator: String
     subscribers: [EventSubscriber] @connection(keyName: "byEvent", fields: ["id"])
+}
+
+type Subscription {
+    onCreateShip: Ship
+    @aws_subscribe(mutations: ["createShip"])
+    @aws_iam
+    @aws_cognito_user_pools
+    onUpdateShip: Ship
+    @aws_subscribe(mutations: ["updateShip"])
+    @aws_iam
+    @aws_cognito_user_pools
+    onDeleteShip: Ship
+    @aws_subscribe(mutations: ["deleteShip"])
+    @aws_iam
+    @aws_cognito_user_pools
+    onUpdateEvent: Event
+    @aws_subscribe(mutations: ["updateEvent"])
+    @aws_iam
+    @aws_cognito_user_pools
 }
 
 type EventSubscriber @model

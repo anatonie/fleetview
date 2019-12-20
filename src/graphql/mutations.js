@@ -47,7 +47,7 @@ export const createEvent = `mutation CreateEvent(
     description
     date
     location
-    private
+    orgOnly
     creator
     subscribers {
       nextToken
@@ -65,7 +65,7 @@ export const updateEvent = `mutation UpdateEvent(
     description
     date
     location
-    private
+    orgOnly
     creator
     subscribers {
       nextToken
@@ -83,7 +83,7 @@ export const deleteEvent = `mutation DeleteEvent(
     description
     date
     location
-    private
+    orgOnly
     creator
     subscribers {
       nextToken
