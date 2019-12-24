@@ -10,19 +10,46 @@ type Ship @model(subscriptions: null) @auth(rules: [
     owner: String
 }
 
-type Event @model(subscriptions: null) @auth(rules: [
+type Event @model(subscriptions: null, mutations: {create: null, update: "updateEvent", delete: "deleteEvent"})
+    @key(fields: ["id", "date"])
+    @auth(rules: [
     {allow: groups, provider: userPools, groups: ["admins", "ops"]},
-    {allow: owner, provider: userPools, ownerField: "creator", operations: [update, delete]},
+    {allow: owner, provider: userPools, ownerField: "creator"},
     {allow: public, provider: iam, operations: [read]},
 ]){
     id: ID!
+    date: AWSDateTime!
     title: String!
     description: String
-    date: String
     location: String
     orgOnly: Boolean
     creator: String
-    subscribers: [EventSubscriber] @connection(keyName: "byEvent", fields: ["id"])
+    subscribers: [EventSubscriber] @connection(fields: ["id"])
+}
+
+input CreateEventInput {
+    date: AWSDateTime!
+    title: String!
+    description: String
+    location: String
+    orgOnly: Boolean
+    creator: String
+}
+
+type Mutation {
+    createEvent(input: CreateEventInput!): Event @aws_cognito_user_pools
+}
+
+type EventSubscriber @model(subscriptions: null)
+    @key(fields: ["eventId", "user"])
+    @auth(rules: [
+    {allow: groups, provider: userPools, groups: ["admins"]},
+    {allow: owner, ownerField: "user", provider: userPools},
+    {allow: public, provider: iam, operations: [read]}
+]){
+    eventId: ID!
+    user: String!
+#    notify: Boolean @auth(rules: [{allow: owner, ownerField: "user"}])
 }
 
 type Subscription {
@@ -38,22 +65,28 @@ type Subscription {
     @aws_subscribe(mutations: ["deleteShip"])
     @aws_iam
     @aws_cognito_user_pools
+    onCreateEvent: Event
+    @aws_subscribe(mutations: ["createEvent"])
+    @aws_iam
+    @aws_cognito_user_pools
     onUpdateEvent: Event
     @aws_subscribe(mutations: ["updateEvent"])
     @aws_iam
     @aws_cognito_user_pools
-}
-
-type EventSubscriber @model
-    @key(name: "byEvent", fields: ["eventId", "user"])
-    @auth(rules: [
-    {allow: private, provider: userPools, operations: [create]},
-    {allow: owner, ownerField: "user", provider: userPools, operations: [update, delete]},
-    {allow: groups, provider: userPools, groups: ["admins"]},
-    {allow: public, provider: iam, operations: [read]}
-]){
-    id: ID!
-    user: String!
-    notify: Boolean @auth(rules: [{allow: owner, ownerField: "user"}])
-    eventId: ID!
+    onDeleteEvent: Event
+    @aws_subscribe(mutations: ["deleteEvent"])
+    @aws_iam
+    @aws_cognito_user_pools
+    onCreateEventSubscriber: EventSubscriber
+    @aws_subscribe(mutations: ["createEventSubscriber"])
+    @aws_iam
+    @aws_cognito_user_pools
+    onUpdateEventSubscriber: EventSubscriber
+    @aws_subscribe(mutations: ["updateEventSubscriber"])
+    @aws_iam
+    @aws_cognito_user_pools
+    onDeleteEventSubscriber: EventSubscriber
+    @aws_subscribe(mutations: ["deleteEventSubscriber"])
+    @aws_iam
+    @aws_cognito_user_pools
 }

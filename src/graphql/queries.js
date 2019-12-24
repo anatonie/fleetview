@@ -26,12 +26,12 @@ export const listShips = `query ListShips(
   }
 }
 `;
-export const getEvent = `query GetEvent($id: ID!) {
-  getEvent(id: $id) {
+export const getEvent = `query GetEvent($id: ID!, $date: AWSDateTime!) {
+  getEvent(id: $id, date: $date) {
     id
+    date
     title
     description
-    date
     location
     orgOnly
     creator
@@ -42,16 +42,26 @@ export const getEvent = `query GetEvent($id: ID!) {
 }
 `;
 export const listEvents = `query ListEvents(
+  $id: ID
+  $date: ModelStringKeyConditionInput
   $filter: ModelEventFilterInput
   $limit: Int
   $nextToken: String
+  $sortDirection: ModelSortDirection
 ) {
-  listEvents(filter: $filter, limit: $limit, nextToken: $nextToken) {
+  listEvents(
+    id: $id
+    date: $date
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+    sortDirection: $sortDirection
+  ) {
     items {
       id
+      date
       title
       description
-      date
       location
       orgOnly
       creator
@@ -60,26 +70,32 @@ export const listEvents = `query ListEvents(
   }
 }
 `;
-export const getEventSubscriber = `query GetEventSubscriber($id: ID!) {
-  getEventSubscriber(id: $id) {
-    id
-    user
+export const getEventSubscriber = `query GetEventSubscriber($eventId: ID!, $user: String!) {
+  getEventSubscriber(eventId: $eventId, user: $user) {
     eventId
-    notify
+    user
   }
 }
 `;
 export const listEventSubscribers = `query ListEventSubscribers(
+  $eventId: ID
+  $user: ModelStringKeyConditionInput
   $filter: ModelEventSubscriberFilterInput
   $limit: Int
   $nextToken: String
+  $sortDirection: ModelSortDirection
 ) {
-  listEventSubscribers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+  listEventSubscribers(
+    eventId: $eventId
+    user: $user
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+    sortDirection: $sortDirection
+  ) {
     items {
-      id
-      user
       eventId
-      notify
+      user
     }
     nextToken
   }

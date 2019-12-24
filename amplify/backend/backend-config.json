@@ -1,102 +1,117 @@
 {
-	"auth": {
-		"userPoolGroups": {
-			"service": "Cognito-UserPool-Groups",
-			"providerPlugin": "awscloudformation",
-			"dependsOn": [
-				{
-					"category": "auth",
-					"resourceName": "roninfleetviewfef25259fef25259",
-					"attributes": [
-						"UserPoolId",
-						"AppClientIDWeb",
-						"AppClientID",
-						"IdentityPoolId"
-					]
-				}
-			]
-		},
-		"roninfleetviewfef25259fef25259": {
-			"service": "Cognito",
-			"providerPlugin": "awscloudformation",
-			"dependsOn": []
-		}
-	},
-	"function": {
-		"AdminQueries07cebf72": {
-			"service": "Lambda",
-			"providerPlugin": "awscloudformation",
-			"build": true,
-			"dependsOn": [
-				{
-					"category": "auth",
-					"resourceName": "roninfleetviewfef25259fef25259",
-					"attributes": [
-						"UserPoolId"
-					]
-				}
-			]
-		},
-		"roninfleetviewf3a46883": {
-			"service": "Lambda",
-			"providerPlugin": "awscloudformation",
-			"build": true
-		}
-	},
-	"api": {
-		"AdminQueries": {
-			"service": "API Gateway",
-			"providerPlugin": "awscloudformation",
-			"dependsOn": [
-				{
-					"category": "auth",
-					"resourceName": "roninfleetviewfef25259fef25259",
-					"attributes": [
-						"UserPoolId"
-					]
-				},
-				{
-					"category": "function",
-					"resourceName": "AdminQueries07cebf72",
-					"attributes": [
-						"Arn",
-						"Name"
-					]
-				}
-			]
-		},
-		"roninfleetview": {
-			"service": "AppSync",
-			"providerPlugin": "awscloudformation",
-			"output": {
-				"authConfig": {
-					"additionalAuthenticationProviders": [
-						{
-							"authenticationType": "AMAZON_COGNITO_USER_POOLS",
-							"userPoolConfig": {
-								"userPoolId": "authroninfleetviewfef25259fef25259"
-							}
-						}
-					],
-					"defaultAuthentication": {
-						"authenticationType": "AWS_IAM"
-					}
-				}
-			}
-		},
-		"apie2d7ff2b": {
-			"service": "API Gateway",
-			"providerPlugin": "awscloudformation",
-			"dependsOn": [
-				{
-					"category": "function",
-					"resourceName": "roninfleetviewf3a46883",
-					"attributes": [
-						"Name",
-						"Arn"
-					]
-				}
-			]
-		}
-	}
+    "auth": {
+        "userPoolGroups": {
+            "service": "Cognito-UserPool-Groups",
+            "providerPlugin": "awscloudformation",
+            "dependsOn": [
+                {
+                    "category": "auth",
+                    "resourceName": "roninfleetviewfef25259fef25259",
+                    "attributes": [
+                        "UserPoolId",
+                        "AppClientIDWeb",
+                        "AppClientID",
+                        "IdentityPoolId"
+                    ]
+                }
+            ]
+        },
+        "roninfleetviewfef25259fef25259": {
+            "service": "Cognito",
+            "providerPlugin": "awscloudformation",
+            "dependsOn": [
+                {
+                    "category": "function",
+                    "resourceName": "roninfleetviewfef25259fef25259PreSignup",
+                    "triggerProvider": "Cognito",
+                    "attributes": [
+                        "Arn",
+                        "Name"
+                    ]
+                }
+            ]
+        }
+    },
+    "function": {
+        "AdminQueries07cebf72": {
+            "service": "Lambda",
+            "providerPlugin": "awscloudformation",
+            "build": true,
+            "dependsOn": [
+                {
+                    "category": "auth",
+                    "resourceName": "roninfleetviewfef25259fef25259",
+                    "attributes": [
+                        "UserPoolId"
+                    ]
+                }
+            ]
+        },
+        "roninfleetviewf3a46883": {
+            "service": "Lambda",
+            "providerPlugin": "awscloudformation",
+            "build": true
+        },
+        "roninfleetviewfef25259fef25259PreSignup": {
+            "service": "Lambda",
+            "providerPlugin": "awscloudformation",
+            "build": true
+        }
+    },
+    "api": {
+        "AdminQueries": {
+            "service": "API Gateway",
+            "providerPlugin": "awscloudformation",
+            "dependsOn": [
+                {
+                    "category": "auth",
+                    "resourceName": "roninfleetviewfef25259fef25259",
+                    "attributes": [
+                        "UserPoolId"
+                    ]
+                },
+                {
+                    "category": "function",
+                    "resourceName": "AdminQueries07cebf72",
+                    "attributes": [
+                        "Arn",
+                        "Name"
+                    ]
+                }
+            ]
+        },
+        "roninfleetview": {
+            "service": "AppSync",
+            "providerPlugin": "awscloudformation",
+            "output": {
+                "authConfig": {
+                    "additionalAuthenticationProviders": [
+                        {
+                            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+                            "userPoolConfig": {
+                                "userPoolId": "authroninfleetviewfef25259fef25259"
+                            }
+                        }
+                    ],
+                    "defaultAuthentication": {
+                        "authenticationType": "AWS_IAM"
+                    }
+                }
+            }
+        },
+        "apie2d7ff2b": {
+            "service": "API Gateway",
+            "providerPlugin": "awscloudformation",
+            "dependsOn": [
+                {
+                    "category": "function",
+                    "resourceName": "roninfleetviewf3a46883",
+                    "attributes": [
+                        "Name",
+                        "Arn"
+                    ]
+                }
+            ]
+        }
+    }
 }

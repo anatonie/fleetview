@@ -11,6 +11,12 @@ const SUB_MAP = {
     Ship: ['fleet', 'myFleet'],
     Event: ['events']
 };
+const EXTRA_CREATE_ACTIONS = {
+    Event: (event) => ({...event, subs: (event.subs ? event.subs : [])})
+};
+const SORT_ACTIONS = {
+    Event: (a, b) => new Date(a.date).getTime() > new Date(b.date).getTime() ? 1 : -1
+};
 
 const reducer = (state, action) => {
     if (action.type.indexOf('on') === 0) {
@@ -23,14 +29,44 @@ const reducer = (state, action) => {
             };
             switch (actionType) {
                 case 'Create':
-                    members.forEach((member) => newState[member].push(action.item));
+                    members.forEach((member) => newState[member].push(
+                        EXTRA_CREATE_ACTIONS[memberKey] ? EXTRA_CREATE_ACTIONS[memberKey](action.item) : action.item
+                    ));
+                    if (SORT_ACTIONS[memberKey]) {
+                        members.forEach((member) => newState[member].sort(SORT_ACTIONS[memberKey]));
+                    }
                     return newState;
                 case 'Delete':
                     members.forEach((member) => newState[member] = newState[member].filter(({id}) => id !== action.item.id));
                     return newState;
                 case 'Update':
-                    members.forEach((member) => newState[member] = newState[member].map((item) => item.id === action.item.id ? action.item : item));
+                    members.forEach((member) => newState[member] = newState[member].map((item) =>
+                        item.id === action.item.id ? {...item, ...action.item} : item
+                    ));
                     return newState;
+                default:
+                // fall through to default reducer
+            }
+        } else if (memberKey === 'EventSubscriber') {
+            const eventId = action.item.eventId;
+            switch (actionType) {
+                case 'Create':
+                case 'Update':
+                    return {
+                        ...state,
+                        events: state.events.map((event) => ({
+                            ...event,
+                            ...(event.id !== eventId ? {} : {subs: [...event.subs, action.item]})
+                        }))
+                    };
+                case 'Delete':
+                    return {
+                        ...state,
+                        events: state.events.map((event) => ({
+                            ...event,
+                            subs: event.id === eventId ? event.subs.filter(({user}) => user !== action.item.user) : event.subs
+                        }))
+                    };
                 default:
                 // fall through to default reducer
             }
@@ -50,10 +86,13 @@ const reducer = (state, action) => {
                     action.sub
                 ]
             };
-        case ACTIONS.SET_EVENTS:
+        case ACTIONS.ADD_EVENT:
             return {
                 ...state,
-                events: action.events
+                events: [
+                    ...(state.events ? state.events : []).filter(({id}) => id !== action.event.id),
+                    action.event
+                ].sort(SORT_ACTIONS.Event)
             };
         case ACTIONS.SET_MY_FLEET:
             return {

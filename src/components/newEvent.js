@@ -8,14 +8,13 @@ export default function NewEvent(props) {
     const {
         title: defTitle = '',
         description: defDescription = '',
-        date: defDate = (new Date()).getTime().toString(),
+        date: defDate = new Date(),
         location: defLocation = '',
-        orgOnly: defOrgOnly = false,
-        id
+        orgOnly: defOrgOnly = false
     } = props.event;
     const [title, setTitle] = useState(defTitle);
     const [description, setDescription] = useState(defDescription);
-    const [date, setDate] = useState(new Date(parseInt(defDate, 10)));
+    const [date, setDate] = useState(new Date(defDate));
     const [location, setLocation] = useState(defLocation);
     const [orgOnly, setOrgOnly] = useState(defOrgOnly);
     return (
@@ -92,14 +91,16 @@ export default function NewEvent(props) {
                 <Button
                     variant="primary"
                     disabled={false}
-                    onClick={() => props.save({
-                        id,
-                        title,
-                        description,
-                        date: date.getTime().toString(),
-                        location,
-                        orgOnly
-                    })}
+                    onClick={() => {
+                        const event = {
+                            title,
+                            description,
+                            date: date.toISOString(),
+                            location,
+                            orgOnly
+                        };
+                        props.save(event);
+                    }}
                 >
                     Save changes
                 </Button>

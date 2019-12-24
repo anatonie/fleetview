@@ -35,13 +35,13 @@
     "thirdPartyAuth": false,
     "userPoolGroups": true,
     "adminQueries": true,
-    "triggers": "{}",
+    "triggers": "{\"PreSignup\":[\"custom\"]}",
     "hostedUI": false,
     "userPoolGroupList": [
         "admins",
-        "ops"
+        "ops",
+        "members"
     ],
-    "adminQueryGroup": "admins",
     "authRoleArn": {
         "Fn::GetAtt": [
             "AuthRole",
@@ -58,5 +58,16 @@
         "Ref": "AWS::StackId"
     },
     "permissions": [],
-    "dependsOn": []
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "roninfleetviewfef25259fef25259PreSignup",
+            "triggerProvider": "Cognito",
+            "attributes": [
+                "Arn",
+                "Name"
+            ]
+        }
+    ],
+    "adminQueryGroup": "admins"
 }

@@ -38,7 +38,7 @@ function* initState(action) {
         if (!username) {
             yield take(ACTIONS.SET_USER);
         }
-        initializeStore();
+        yield initializeStore(true);
     }
 }
 
@@ -86,7 +86,7 @@ function* handleSignOut(action) {
 }
 
 function* handleSignIn(action) {
-    const {subs = [], username, admin} = yield select();
+    const {subs = [], username} = yield select();
     if (subs.length > 0) {
         while (subs.length) {
             const sub = subs.pop();
@@ -95,14 +95,19 @@ function* handleSignIn(action) {
     }
     if (username) {
         yield all(Object.keys(subscriptions)
-            .filter((sub) => admin || sub.toLowerCase().indexOf('ship') >= 0)
+            // .filter((sub) => (admin  && sub.toLowerCase().indexOf('sub') < 0)|| sub.toLowerCase().indexOf('ship') >= 0)
             .map(function* (subName) {
-                const sub = API.graphql({...graphqlOperation(subscriptions[subName]), authMode:'AMAZON_COGNITO_USER_POOLS'})
-                    .subscribe({next: (item) => {
-                        console.log(item);
-                        store.dispatch({type: subName, item: item.value.data[subName]})
-                    }});
-                yield put({type: ACTIONS.ADD_SUBS, sub});
+                try {
+                    const sub = API.graphql({...graphqlOperation(subscriptions[subName]), authMode:'AMAZON_COGNITO_USER_POOLS'})
+                        .subscribe({next: (item) => {
+                                store.dispatch({type: subName, item: item.value.data[subName]})
+                            }});
+                    yield put({type: ACTIONS.ADD_SUBS, sub});
+                } catch (e) {
+                    console.log(subName);
+                    console.log(e);
+                }
+
             }));
     }
 }

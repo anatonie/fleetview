@@ -3,11 +3,12 @@ import * as FleetView from './fleetview';
 import store from './store';
 import { ACTIONS } from './actions';
 
-const initializeStore = () => {
+const initializeStore = (loggedIn = false) => {
     OrgFleet.listShips()
         .then((fleet) => store.dispatch({type: ACTIONS.SET_FLEET, fleet}));
-    OrgFleet.listEvents()
-        .then((events) => store.dispatch({type: ACTIONS.SET_EVENTS, events}));
+    OrgFleet.listEvents(loggedIn)
+        .then((events) => events.forEach((event) => OrgFleet.getEventSubscribers(event.id)
+            .then((subs) => store.dispatch({type: ACTIONS.ADD_EVENT, event: {...event, subs: subs ? subs : []}}))));
     FleetView.getModels()
         .then((models) => store.dispatch({type: 'setModels', models}))
         .then(() => FleetView.getManufacturers())

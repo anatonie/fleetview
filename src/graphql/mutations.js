@@ -1,6 +1,21 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const createEvent = `mutation CreateEvent($input: CreateEventInput!) {
+  createEvent(input: $input) {
+    id
+    date
+    title
+    description
+    location
+    orgOnly
+    creator
+    subscribers {
+      nextToken
+    }
+  }
+}
+`;
 export const createShip = `mutation CreateShip(
   $input: CreateShipInput!
   $condition: ModelShipConditionInput
@@ -37,33 +52,15 @@ export const deleteShip = `mutation DeleteShip(
   }
 }
 `;
-export const createEvent = `mutation CreateEvent(
-  $input: CreateEventInput!
-  $condition: ModelEventConditionInput
-) {
-  createEvent(input: $input, condition: $condition) {
-    id
-    title
-    description
-    date
-    location
-    orgOnly
-    creator
-    subscribers {
-      nextToken
-    }
-  }
-}
-`;
 export const updateEvent = `mutation UpdateEvent(
   $input: UpdateEventInput!
   $condition: ModelEventConditionInput
 ) {
   updateEvent(input: $input, condition: $condition) {
     id
+    date
     title
     description
-    date
     location
     orgOnly
     creator
@@ -79,9 +76,9 @@ export const deleteEvent = `mutation DeleteEvent(
 ) {
   deleteEvent(input: $input, condition: $condition) {
     id
+    date
     title
     description
-    date
     location
     orgOnly
     creator
@@ -96,10 +93,8 @@ export const createEventSubscriber = `mutation CreateEventSubscriber(
   $condition: ModelEventSubscriberConditionInput
 ) {
   createEventSubscriber(input: $input, condition: $condition) {
-    id
-    user
     eventId
-    notify
+    user
   }
 }
 `;
@@ -108,10 +103,8 @@ export const updateEventSubscriber = `mutation UpdateEventSubscriber(
   $condition: ModelEventSubscriberConditionInput
 ) {
   updateEventSubscriber(input: $input, condition: $condition) {
-    id
-    user
     eventId
-    notify
+    user
   }
 }
 `;
@@ -120,10 +113,8 @@ export const deleteEventSubscriber = `mutation DeleteEventSubscriber(
   $condition: ModelEventSubscriberConditionInput
 ) {
   deleteEventSubscriber(input: $input, condition: $condition) {
-    id
-    user
     eventId
-    notify
+    user
   }
 }
 `;

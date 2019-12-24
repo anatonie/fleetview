@@ -6,5 +6,9 @@
     {
         "groupName": "ops",
         "precedence": 2
+    },
+    {
+        "groupName": "members",
+        "precedence": 3
     }
 ]

@@ -18,7 +18,8 @@ app.use((req, res, next) => {
 // Only perform tasks if the user is in a specific group
 const GROUPS = {
     ADMINS: process.env.ADMIN_GROUP,
-    OPS: process.env.OPS_GROUP
+    OPS: process.env.OPS_GROUP,
+    MEMBERS: process.env.MEMBERS_GROUP
 };
 
 const checkGroup = (req, groupName) => {
@@ -38,9 +39,11 @@ const checkGroupMiddleware = (req, res, next, groupName) => {
     }
 };
 
+app.all('/members/*', (req, res, next) => checkGroupMiddleware(req, res, next, GROUPS.MEMBERS));
 app.all('/ops/*', (req, res, next) => checkGroupMiddleware(req, res, next, GROUPS.OPS));
 app.all('/admin/*', (req, res, next) => checkGroupMiddleware(req, res, next, GROUPS.ADMINS));
 
+app.get('/check/member', (req, res) => res.json({member: checkGroup(req, GROUPS.MEMBERS)}));
 app.get('/check/op', (req, res) => res.json({member: checkGroup(req, GROUPS.OPS)}));
 app.get('/check/admin', (req, res) => res.json({member: checkGroup(req, GROUPS.ADMINS)}));
 

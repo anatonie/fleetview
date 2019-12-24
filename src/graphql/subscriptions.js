@@ -28,12 +28,42 @@ export const onDeleteShip = `subscription OnDeleteShip {
   }
 }
 `;
+export const onCreateEvent = `subscription OnCreateEvent {
+  onCreateEvent {
+    id
+    date
+    title
+    description
+    location
+    orgOnly
+    creator
+    subscribers {
+      nextToken
+    }
+  }
+}
+`;
 export const onUpdateEvent = `subscription OnUpdateEvent {
   onUpdateEvent {
     id
+    date
     title
     description
+    location
+    orgOnly
+    creator
+    subscribers {
+      nextToken
+    }
+  }
+}
+`;
+export const onDeleteEvent = `subscription OnDeleteEvent {
+  onDeleteEvent {
+    id
     date
+    title
+    description
     location
     orgOnly
     creator
@@ -45,28 +75,22 @@ export const onUpdateEvent = `subscription OnUpdateEvent {
 `;
 export const onCreateEventSubscriber = `subscription OnCreateEventSubscriber {
   onCreateEventSubscriber {
-    id
-    user
     eventId
-    notify
+    user
   }
 }
 `;
-export const onUpdateEventSubscriber = `subscription OnUpdateEventSubscriber($user: String) {
-  onUpdateEventSubscriber(user: $user) {
-    id
-    user
+export const onUpdateEventSubscriber = `subscription OnUpdateEventSubscriber {
+  onUpdateEventSubscriber {
     eventId
-    notify
+    user
   }
 }
 `;
-export const onDeleteEventSubscriber = `subscription OnDeleteEventSubscriber($user: String) {
-  onDeleteEventSubscriber(user: $user) {
-    id
-    user
+export const onDeleteEventSubscriber = `subscription OnDeleteEventSubscriber {
+  onDeleteEventSubscriber {
     eventId
-    notify
+    user
   }
 }
 `;

@@ -2,12 +2,45 @@
 	"AWSTemplateFormatVersion": "2010-09-09",
 	"Description": "Lambda resource stack creation using Amplify CLI",
 	"Parameters": {
+		"DOMAINBLACKLIST": {
+			"Type": "String",
+			"Default": ""
+		},
+		"DOMAINWHITELIST": {
+			"Type": "String",
+			"Default": ""
+		},
+		"modules": {
+			"Type": "String",
+			"Default": "",
+			"Description": "Comma-delimmited list of modules to be executed by a lambda trigger. Sent to resource as an env variable."
+		},
+		"resourceName": {
+			"Type": "String",
+			"Default": ""
+		},
+		"trigger": {
+			"Type": "String",
+			"Default": "true"
+		},
+		"functionName": {
+			"Type": "String",
+			"Default": ""
+		},
+		"roleName": {
+			"Type": "String",
+			"Default": ""
+		},
+		"parentResource": {
+			"Type": "String",
+			"Default": ""
+		},
+		"parentStack": {
+			"Type": "String",
+			"Default": ""
+		},
 		"env": {
 			"Type": "String"
-		},
-		"authroninfleetviewfef25259fef25259UserPoolId": {
-			"Type": "String",
-			"Default": "authroninfleetviewfef25259fef25259UserPoolId"
 		}
 	},
 	"Conditions": {
@@ -32,12 +65,12 @@
 				"FunctionName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"AdminQueries07cebf72",
+						"roninfleetviewfef25259fef25259PreSignup",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"AdminQueries07cebf72",
+									"roninfleetviewfef25259fef25259PreSignup",
 									"-",
 									{
 										"Ref": "env"
@@ -52,11 +85,17 @@
 						"ENV": {
 							"Ref": "env"
 						},
-						"ADMIN_GROUP": "admins",
-						"OPS_GROUP": "ops",
-						"MEMBERS_GROUP": "members",
-						"USERPOOL": {
-							"Ref": "authroninfleetviewfef25259fef25259UserPoolId"
+						"MODULES": {
+							"Ref": "modules"
+						},
+						"REGION": {
+							"Ref": "AWS::Region"
+						},
+						"DOMAINWHITELIST": {
+							"Ref": "DOMAINWHITELIST"
+						},
+						"DOMAINBLACKLIST": {
+							"Ref": "DOMAINBLACKLIST"
 						}
 					}
 				},
@@ -70,7 +109,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-roninfleetview-dev-163907-deployment",
-					"S3Key": "amplify-builds/AdminQueries07cebf72-4f4e776c615439586273-build.zip"
+					"S3Key": "amplify-builds/roninfleetviewfef25259fef25259PreSignup-784a78766876306c7653-build.zip"
 				}
 			}
 		},
@@ -80,12 +119,12 @@
 				"RoleName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"AdminQueries07cebf72LambdaRole",
+						"roninfleetviewfef25259fef25259PreSignup",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"AdminQueries07cebf72LambdaRole",
+									"roninfleetviewfef25259fef25259PreSignup",
 									"-",
 									{
 										"Ref": "env"
@@ -151,40 +190,6 @@
 									}
 								]
 							}
-						},
-						{
-							"Effect": "Allow",
-							"Action": [
-								"cognito-idp:ListUsersInGroup",
-								"cognito-idp:AdminUserGlobalSignOut",
-								"cognito-idp:AdminEnableUser",
-								"cognito-idp:AdminDisableUser",
-								"cognito-idp:AdminRemoveUserFromGroup",
-								"cognito-idp:AdminAddUserToGroup",
-								"cognito-idp:AdminListGroupsForUser",
-								"cognito-idp:AdminGetUser",
-								"cognito-idp:AdminConfirmSignUp",
-								"cognito-idp:ListUsers"
-							],
-							"Resource": {
-								"Fn::Join": [
-									"",
-									[
-										"arn:aws:cognito-idp:",
-										{
-											"Ref": "AWS::Region"
-										},
-										":",
-										{
-											"Ref": "AWS::AccountId"
-										},
-										":userpool/",
-										{
-											"Ref": "authroninfleetviewfef25259fef25259UserPoolId"
-										}
-									]
-								]
-							}
 						}
 					]
 				}
@@ -208,11 +213,6 @@
 		"Region": {
 			"Value": {
 				"Ref": "AWS::Region"
-			}
-		},
-		"LambdaExecutionRole": {
-			"Value": {
-				"Ref": "LambdaExecutionRole"
 			}
 		}
 	}

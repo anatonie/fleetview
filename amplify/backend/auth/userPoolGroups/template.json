@@ -131,6 +131,52 @@
             }
         },
     
+        "membersGroup": {
+          "Type" : "AWS::Cognito::UserPoolGroup",
+          "Properties" : {
+              "GroupName" : "members",
+              "Precedence" : 3,
+              "RoleArn" : {
+                "Fn::GetAtt": [
+                    "membersGroupRole",
+                    "Arn"
+                ]
+              },
+              "UserPoolId" : {
+                "Ref": "authroninfleetviewfef25259fef25259UserPoolId"
+              } 
+            }
+        },
+        "membersGroupRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "RoleName":{
+                    "Fn::Join": [
+                        "",
+                        [
+                          {
+                            "Ref": "authroninfleetviewfef25259fef25259UserPoolId"
+                          },
+                          "-membersGroupRole"
+                        ]
+                    ]
+                },
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Sid": "",
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Federated": "cognito-identity.amazonaws.com"
+                            },
+                            "Action": "sts:AssumeRoleWithWebIdentity"
+                        }
+                    ]
+                }
+            }
+        },
+    
         "LambdaExecutionRole": {
             "Type": "AWS::IAM::Role",
             "Properties": {
@@ -343,6 +389,17 @@
             "Value": {
                 "Fn::GetAtt": [
                     "opsGroupRole",
+                    "Arn"
+                ]
+            }
+         
+        },
+        
+      
+        "membersGroupRole": {
+            "Value": {
+                "Fn::GetAtt": [
+                    "membersGroupRole",
                     "Arn"
                 ]
             }

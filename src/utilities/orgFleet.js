@@ -40,8 +40,21 @@ export const updateShip = (id, type, name) => API.graphql(buildParams(mutations.
 
 export const deleteShip = (id) => API.graphql(buildParams(mutations.deleteShip, {input: {id}}, true));
 
-export const listEvents = () => getPaginatedApi((nextToken) => buildParams(queries.listEvents, {nextToken}));
+export const listEvents = (loggedIn) => getPaginatedApi((nextToken) =>
+    buildParams(queries.listEvents, {filter: {
+            ...(loggedIn ? undefined : ({orgOnly: {ne: true}})), date: {gt: new Date().toISOString()}}, nextToken}));
 
 export const createEvent = (event) => API.graphql(buildParams(mutations.createEvent, {input: event}, true));
 
+export const deleteEvent = (id, date) => API.graphql(buildParams(mutations.deleteEvent, {input: {id, date}}, true));
+
 export const updateEvent = (event) => API.graphql(buildParams(mutations.updateEvent, {input: event}, true));
+
+export const getEventSubscribers = (eventId) =>
+    getPaginatedApi((nextToken) => buildParams(queries.listEventSubscribers, {eventId, nextToken}, true));
+
+export const subscribeEvent = (eventId, user) => API.graphql(
+    buildParams(mutations.createEventSubscriber, {input: {eventId, user}}, true));
+
+export const unSubscribeEvent = (eventId, user) => API.graphql(
+    buildParams(mutations.deleteEventSubscriber, {input: {eventId, user}}, true));

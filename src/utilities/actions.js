@@ -10,7 +10,8 @@ export const ACTIONS = {
     ADD_SUBS: 'ADD_SUBS',
     CLEAR_SUBS: 'CLEAR_SUBS',
     SIGN_IN: 'SIGN_IN',
-    SIGN_OUT: 'SIGN_OUT'
+    SIGN_OUT: 'SIGN_OUT',
+    ADD_EVENT: 'ADD_EVENT'
 };
 
 export const setAuthState = (authState) => ({type: ACTIONS.SET_AUTH, authState});
