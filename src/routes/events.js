@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import CardColumns from 'react-bootstrap/CardColumns'
 
 import NewEvent from '../components/newEvent';
 import * as OrgFleet from '../utilities/orgFleet';
@@ -32,7 +31,8 @@ function Events(props) {
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'justify',
-                        flexWrap: 'wrap'
+                        flexWrap: 'wrap',
+                        flexDirection: 'column'
                     }}
                 >
                     {events.map((event) => (
