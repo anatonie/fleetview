@@ -32,7 +32,7 @@ function Events(props) {
                         justifyContent: 'center',
                         alignItems: 'justify',
                         flexWrap: 'wrap',
-                        flexDirection: 'column'
+                        width: '100%'
                     }}
                 >
                     {events.map((event) => (
