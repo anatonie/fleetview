@@ -48,6 +48,10 @@ function* initLogin(action) {
         yield put({type: ACTIONS.SET_USER, username});
         const admin = yield OrgApi.checkAdmin();
         yield put({type: ACTIONS.SET_ADMIN, admin});
+        if (!admin) {
+            const op = yield OrgApi.checkOp();
+            yield put({type: ACTIONS.SET_OP, op});
+        }
         yield put({type: ACTIONS.SIGN_IN});
         const {fleet} = yield select();
         if (fleet) {

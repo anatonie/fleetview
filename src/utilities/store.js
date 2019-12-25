@@ -116,6 +116,11 @@ const reducer = (state, action) => {
                 ...state,
                 admin: action.admin
             };
+        case ACTIONS.SET_OP:
+            return {
+                ...state,
+                op: action.op
+            };
         case ACTIONS.SET_FLEET:
             return {
                 ...state,

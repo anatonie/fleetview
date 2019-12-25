@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
+import CardColumns from 'react-bootstrap/CardColumns'
 
 import NewEvent from '../components/newEvent';
 import * as OrgFleet from '../utilities/orgFleet';
@@ -9,33 +11,65 @@ function Events(props) {
     const {
         events = [],
         admin = false,
+        op = false,
         authState,
         username
     } = props;
     const [updateModal, setUpdateModal] = useState(false);
     const [event, setEvent] = useState({});
+    const infoStyles = {whiteSpace: 'nowrap'};
+    const buttonStyles = {margin: '0.5rem'};
     return (
-        <div>
-            <div style={{margin: '1rem'}}>
-                {admin && <Button onClick={() => setUpdateModal(true)} style={{float: 'right'}}>Add new event</Button>}
+        <div style={{padding: '1rem'}}>
+            <div style={{float: 'right'}}>
+                {(admin || op) && <Button onClick={() => setUpdateModal(true)} style={{float: 'right'}}>Add new event</Button>}
+                {username && <p style={{clear: 'both'}}><span className="text-primary">Blue</span> borders are org only events</p>}
             </div>
             <div>
-                {events.map((event) => (
-                    <div key={event.id}>
-                        <div>Title: {event.title}</div>
-                        <div>Creator: {event.creator}</div>
-                        <div>Description: {event.description}</div>
-                        <div>Location: {event.location}</div>
-                        <div>Date: {new Date(event.date).toString()}</div>
-                        <div>Attendees: {event.subs.length}</div>
-                        <div>Org Only: {event.orgOnly ? 'true' : 'false'}</div>
-                        {authState === 'signedIn' && event.subs.map(({user}) => user).indexOf(username) < 0 && <div onClick={() => OrgFleet.subscribeEvent(event.id, username)}>Subscribe</div>}
-                        {authState === 'signedIn' && event.subs.map(({user}) => user).indexOf(username) >= 0 && <div onClick={() => OrgFleet.unSubscribeEvent(event.id, username)}>Unsubscribe</div>}
-                        {admin && <div onClick={() => setEvent(event) & setUpdateModal(true)}>Update</div>}
-                        {admin && <div onClick={() => OrgFleet.deleteEvent(event.id, event.date)}>Delete</div>}
-                        <br/>
-                    </div>
-                ))}
+                <div
+                    style={{
+                        marginTop: '3rem',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'justify',
+                        flexWrap: 'wrap'
+                    }}
+                >
+                    {events.map((event) => (
+                        <Card
+                            key={event.id}
+                            style={{
+                                width: '25%',
+                                minWidth: '16rem',
+                                maxWidth: '20rem',
+                                margin: '1rem'
+                            }}
+                            border={event.orgOnly ? 'primary' : undefined}
+                        >
+                            <Card.Body style={{display: 'flex', flexDirection: 'column'}}>
+                                <Card.Title>{event.title}</Card.Title>
+                                <Card.Text style={{flex: 1}}>{event.description}</Card.Text>
+                                <Card.Text>
+                                    <span style={infoStyles}>Where: {event.location}</span>
+                                    <span style={infoStyles}>When: {new Date(event.date).toLocaleString()}</span>
+                                    <span style={infoStyles}>Organizer: {event.creator}</span>
+                                </Card.Text>
+                                <Card.Footer style={{padding: 0}}>
+                                    {authState === 'signedIn' && (
+                                        event.subs.map(({user}) => user).indexOf(username) < 0 ? (
+                                            <Button style={buttonStyles} variant="primary" onClick={() => OrgFleet.subscribeEvent(event.id, username)}>Subscribe</Button>
+                                        ) : (
+                                            <Button style={buttonStyles} variant="primary" onClick={() => OrgFleet.unSubscribeEvent(event.id, username)}>Unsubscribe</Button>
+                                        ))}
+                                        <div>
+                                            {admin && <Button style={buttonStyles} onClick={() => setEvent(event) & setUpdateModal(true)}>Edit</Button>}
+                                            {(admin || username === event.creator) && <Button style={buttonStyles} onClick={() => OrgFleet.deleteEvent(event.id, event.date)}>Delete</Button>}
+                                        </div>
+                                </Card.Footer>
+                            </Card.Body>
+                        </Card>
+                    ))}
+                </div>
             </div>
             {updateModal && <NewEvent
                 event={event}

@@ -33,7 +33,7 @@ export default {
         component: FleetOverview
     },
     EVENTS: {
-        // admin: true,
+        admin: true,
         path: '/events',
         title: 'Events',
         component: Events

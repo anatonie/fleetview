@@ -15,6 +15,9 @@ const get = (path) => authRequest('get', path);
 
 const checkAdmin = async () => (await get('/check/admin')).member;
 
+const checkOp = async () => (await get('/check/op')).member;
+
 export default {
-    checkAdmin
+    checkAdmin,
+    checkOp
 }

@@ -2,6 +2,7 @@ export const ACTIONS = {
     START: 'START',
     SET_AUTH: 'SET_AUTH',
     SET_ADMIN: 'SET_ADMIN',
+    SET_OP: 'SET_OP',
     SET_USER: 'SET_USER',
     SET_MY_FLEET: 'SET_MY_FLEET',
     SET_FLEET: 'SET_FLEET',

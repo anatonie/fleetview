@@ -23,6 +23,11 @@ html {
     .block {
       display: block;
     }
+    .card-deck {
+      .card {
+        margin-bottom: 30px;
+      }
+    }
   }
 }
 
