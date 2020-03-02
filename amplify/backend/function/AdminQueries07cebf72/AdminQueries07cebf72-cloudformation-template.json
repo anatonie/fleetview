@@ -70,7 +70,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-roninfleetview-dev-163907-deployment",
-					"S3Key": "amplify-builds/AdminQueries07cebf72-4f4e776c615439586273-build.zip"
+					"S3Key": "amplify-builds/AdminQueries07cebf72-4454794447554268684d-build.zip"
 				}
 			}
 		},
