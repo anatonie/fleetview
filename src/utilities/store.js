@@ -73,6 +73,20 @@ const reducer = (state, action) => {
         }
     }
     switch (action.type) {
+        case ACTIONS.SET_USERS:
+            return {
+                ...state,
+                users: action.users,
+                usersToken: action.usersToken
+            };
+        case ACTIONS.SIGN_OUT:
+            return {
+                ...state,
+                users: [],
+                admin: false,
+                op: false,
+                member: false
+            };
         case ACTIONS.CLEAR_SUBS:
             return {
                 ...state,
@@ -114,12 +128,23 @@ const reducer = (state, action) => {
         case ACTIONS.SET_ADMIN:
             return {
                 ...state,
-                admin: action.admin
+                admin: action.admin,
+                op: action.admin,
+                member: action.admin
             };
         case ACTIONS.SET_OP:
             return {
                 ...state,
-                op: action.op
+                admin: false,
+                op: action.op,
+                member: action.op
+            };
+        case ACTIONS.SET_MEMBER:
+            return {
+                ...state,
+                admin: false,
+                op: false,
+                member: action.member
             };
         case ACTIONS.SET_FLEET:
             return {

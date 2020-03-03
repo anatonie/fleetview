@@ -17,7 +17,12 @@ const checkAdmin = async () => (await get('/check/admin')).member;
 
 const checkOp = async () => (await get('/check/op')).member;
 
+const listUsers = (token) => get(`/listUsers${token ? `?token=${encodeURIComponent(token)}` : ''}`);
+const listUsersInGroup = (groupname) => get(`/listUsersInGroup?groupname=${groupname}`);
+
 export default {
     checkAdmin,
-    checkOp
+    checkOp,
+    listUsers,
+    listUsersInGroup
 }

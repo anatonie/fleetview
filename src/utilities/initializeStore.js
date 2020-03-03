@@ -4,10 +4,11 @@ import store from './store';
 import { ACTIONS } from './actions';
 
 const initializeStore = (loggedIn = false) => {
+    console.log(loggedIn);
     OrgFleet.listShips()
         .then((fleet) => store.dispatch({type: ACTIONS.SET_FLEET, fleet}));
     OrgFleet.listEvents(loggedIn)
-        .then((events) => events.forEach((event) => OrgFleet.getEventSubscribers(event.id)
+        .then((events) => events.forEach((event) => OrgFleet.getEventSubscribers(event.id, loggedIn)
             .then((subs) => store.dispatch({type: ACTIONS.ADD_EVENT, event: {...event, subs: subs ? subs : []}}))));
     FleetView.getModels()
         .then((models) => store.dispatch({type: 'setModels', models}))

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import ReactMarkdown from 'react-markdown';
 
 import NewEvent from '../components/newEvent';
 import * as OrgFleet from '../utilities/orgFleet';
@@ -48,7 +49,7 @@ function Events(props) {
                         >
                             <Card.Body style={{display: 'flex', flexDirection: 'column'}}>
                                 <Card.Title>{event.title}</Card.Title>
-                                <Card.Text style={{flex: 1}}>{event.description}</Card.Text>
+                                <ReactMarkdown style={{flex: 1}} className="card-text" source={event.description}/>t
                                 <Card.Text>
                                     <span style={infoStyles}>Where: {event.location}</span>
                                     <span style={infoStyles}>When: {new Date(event.date).toLocaleString()}</span>

@@ -13,6 +13,7 @@ type Ship @model(subscriptions: null) @auth(rules: [
 type Event @model(subscriptions: null, mutations: {create: null, update: "updateEvent", delete: "deleteEvent"})
     @key(fields: ["id", "date"])
     @auth(rules: [
+    {allow: private, provider: userPools, operations: [read]},
     {allow: groups, provider: userPools, groups: ["admins", "ops"]},
     {allow: owner, provider: userPools, ownerField: "creator"},
     {allow: public, provider: iam, operations: [read]},

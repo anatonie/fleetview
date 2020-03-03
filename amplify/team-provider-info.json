@@ -21,54 +21,5 @@
                 "roninfleetviewfef25259fef25259PreSignup": {}
             }
         }
-    },
-    "prod": {
-        "awscloudformation": {
-            "AuthRoleName": "amplify-roninfleetview-prod-144943-authRole",
-            "UnauthRoleArn": "arn:aws:iam::338071533592:role/amplify-roninfleetview-prod-144943-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::338071533592:role/amplify-roninfleetview-prod-144943-authRole",
-            "Region": "us-west-2",
-            "DeploymentBucketName": "amplify-roninfleetview-prod-144943-deployment",
-            "UnauthRoleName": "amplify-roninfleetview-prod-144943-unauthRole",
-            "StackName": "amplify-roninfleetview-prod-144943",
-            "StackId": "arn:aws:cloudformation:us-west-2:338071533592:stack/amplify-roninfleetview-prod-144943/b18f6830-1d31-11ea-99d9-0613825de49c",
-            "AmplifyAppId": "d1ie5jx2ibftls"
-        },
-        "categories": {
-            "auth": {
-                "userPoolGroups": {},
-                "roninfleetviewfef25259fef25259": {}
-            },
-            "function": {
-                "AdminQueries07cebf72": {},
-                "roninfleetviewf3a46883": {},
-                "roninfleetviewfef25259fef25259": {}
-            }
-        }
-    },
-    "deva": {
-        "awscloudformation": {
-            "AuthRoleName": "amplify-roninfleetview-deva-113655-authRole",
-            "UnauthRoleArn": "arn:aws:iam::338071533592:role/amplify-roninfleetview-deva-113655-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::338071533592:role/amplify-roninfleetview-deva-113655-authRole",
-            "Region": "us-west-2",
-            "DeploymentBucketName": "amplify-roninfleetview-deva-113655-deployment",
-            "UnauthRoleName": "amplify-roninfleetview-deva-113655-unauthRole",
-            "StackName": "amplify-roninfleetview-deva-113655",
-            "StackId": "arn:aws:cloudformation:us-west-2:338071533592:stack/amplify-roninfleetview-deva-113655/bf2eb7f0-2684-11ea-a07b-02f4d5795088",
-            "AmplifyAppId": "d1ie5jx2ibftls"
-        },
-        "categories": {
-            "auth": {
-                "userPoolGroups": {},
-                "roninfleetviewfef25259fef25259": {}
-            },
-            "function": {
-                "AdminQueries07cebf72": {},
-                "roninfleetviewf3a46883": {},
-                "roninfleetviewfef25259fef25259PreSignup": {},
-                "roninfleetviewfef25259fef25259": {}
-            }
-        }
     }
 }

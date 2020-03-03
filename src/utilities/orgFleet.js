@@ -50,8 +50,8 @@ export const deleteEvent = (id, date) => API.graphql(buildParams(mutations.delet
 
 export const updateEvent = (event) => API.graphql(buildParams(mutations.updateEvent, {input: event}, true));
 
-export const getEventSubscribers = (eventId) =>
-    getPaginatedApi((nextToken) => buildParams(queries.listEventSubscribers, {eventId, nextToken}, true));
+export const getEventSubscribers = (eventId, loggedIn) =>
+    getPaginatedApi((nextToken) => buildParams(queries.listEventSubscribers, {eventId, nextToken}, loggedIn));
 
 export const subscribeEvent = (eventId, user) => API.graphql(
     buildParams(mutations.createEventSubscriber, {input: {eventId, user}}, true));

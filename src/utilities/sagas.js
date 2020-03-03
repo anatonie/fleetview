@@ -28,6 +28,7 @@ export default function* rootSaga() {
     yield takeEvery(ACTIONS.SET_FLEET, setFleetSaga);
     yield takeLatest(ACTIONS.SIGN_IN, handleSignIn);
     yield takeLatest(ACTIONS.SIGN_OUT, handleSignOut);
+    yield takeEvery(ACTIONS.LIST_USERS, listUsers);
 }
 
 function* initState(action) {
@@ -48,8 +49,9 @@ function* initLogin(action) {
         yield put({type: ACTIONS.SET_USER, username});
         const admin = yield OrgApi.checkAdmin();
         yield put({type: ACTIONS.SET_ADMIN, admin});
+        let op = false;
         if (!admin) {
-            const op = yield OrgApi.checkOp();
+            op = yield OrgApi.checkOp();
             yield put({type: ACTIONS.SET_OP, op});
         }
         yield put({type: ACTIONS.SIGN_IN});
@@ -57,11 +59,33 @@ function* initLogin(action) {
         if (fleet) {
             yield setMyFleet(fleet);
         }
+        if (op || admin) {
+            yield put({type: ACTIONS.LIST_USERS});
+        }
     }
     if (action.authState === 'none') {
         yield put({type: ACTIONS.SET_MY_FLEET, myFleet: []});
 
     }
+}
+
+function* listUsers() {
+    const {usersToken: token} = yield select();
+    const [{users}, {admins}, {ops}, {members}] = yield all([
+        OrgApi.listUsers(token).then(({Users}) => ({users: Users})),
+        OrgApi.listUsersInGroup('admins').then(({Users}) => ({admins: Users.map(({Username}) => Username)})),
+        OrgApi.listUsersInGroup('ops').then(({Users}) => ({ops: Users.map(({Username}) => Username)})),
+        OrgApi.listUsersInGroup('members').then(({Users}) => ({members: Users.map(({Username}) => Username)})),
+    ]);
+    const mappedUsers = users.map((user) => ({
+        ...user,
+        Groups: [
+            ...(admins.indexOf(user.Username) >= 0 ? ['admins'] : []),
+            ...(ops.indexOf(user.Username) >= 0 ? ['ops'] : []),
+            ...(members.indexOf(user.Username) >= 0 ? ['members'] : [])
+        ]
+    }));
+    yield put({type: ACTIONS.SET_USERS, users: mappedUsers});
 }
 
 function* setFleetSaga(action) {

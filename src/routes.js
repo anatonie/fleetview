@@ -3,6 +3,7 @@ import Fleetview from './routes/fleetview';
 import Manage from './routes/manage';
 import FleetOverview from './routes/fleetOverview';
 import Events from './routes/events';
+import ManageUsers from './routes/manageUsers';
 
 export default {
     HOME: {
@@ -33,9 +34,16 @@ export default {
         component: FleetOverview
     },
     EVENTS: {
-        admin: true,
+        // admin: true,
         path: '/events',
         title: 'Events',
         component: Events
+    },
+    MANAGE_USERS: {
+        admin: true,
+        account: true,
+        path: '/users',
+        title: 'Org members',
+        component: ManageUsers
     }
 }
