@@ -62,7 +62,7 @@
 				"Runtime": "nodejs10.x",
 				"Timeout": "25",
 				"Code": {
-					"S3Bucket": "amplify-roninfleetview-dev-163907-deployment",
+					"S3Bucket": "amplify-roninfleetview-prod-144943-deployment",
 					"S3Key": "amplify-builds/roninfleetviewf3a46883-747a7246446b356a722f-build.zip"
 				}
 			}

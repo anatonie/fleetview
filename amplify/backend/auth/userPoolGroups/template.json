@@ -5,10 +5,12 @@
             "Type": "String",
             "Default": "authroninfleetviewfef25259fef25259UserPoolId"
         },
+        
         "authroninfleetviewfef25259fef25259IdentityPoolId": {
             "Type": "String",
             "Default": "authroninfleetviewfef25259fef25259IdentityPoolId"
         },
+        
         "authroninfleetviewfef25259fef25259AppClientID": {
             "Type": "String",
             "Default": "authroninfleetviewfef25259fef25259AppClientID"
@@ -44,17 +46,20 @@
           "Properties" : {
               "GroupName" : "admins",
               "Precedence" : 1,
+              
               "RoleArn" : {
                 "Fn::GetAtt": [
                     "adminsGroupRole",
                     "Arn"
                 ]
               },
+              
               "UserPoolId" : {
                 "Ref": "authroninfleetviewfef25259fef25259UserPoolId"
               } 
             }
         },
+        
         "adminsGroupRole": {
             "Type": "AWS::IAM::Role",
             "Properties": {
@@ -78,29 +83,37 @@
                             "Principal": {
                                 "Federated": "cognito-identity.amazonaws.com"
                             },
-                            "Action": "sts:AssumeRoleWithWebIdentity"
+                            "Action": "sts:AssumeRoleWithWebIdentity",
+                            "Condition": {
+                              "StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref":"authroninfleetviewfef25259fef25259IdentityPoolId"}},
+                              "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": "authenticated"}
+                            }
                         }
                     ]
                 }
             }
         },
+     
     
         "opsGroup": {
           "Type" : "AWS::Cognito::UserPoolGroup",
           "Properties" : {
               "GroupName" : "ops",
               "Precedence" : 2,
+              
               "RoleArn" : {
                 "Fn::GetAtt": [
                     "opsGroupRole",
                     "Arn"
                 ]
               },
+              
               "UserPoolId" : {
                 "Ref": "authroninfleetviewfef25259fef25259UserPoolId"
               } 
             }
         },
+        
         "opsGroupRole": {
             "Type": "AWS::IAM::Role",
             "Properties": {
@@ -124,29 +137,37 @@
                             "Principal": {
                                 "Federated": "cognito-identity.amazonaws.com"
                             },
-                            "Action": "sts:AssumeRoleWithWebIdentity"
+                            "Action": "sts:AssumeRoleWithWebIdentity",
+                            "Condition": {
+                              "StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref":"authroninfleetviewfef25259fef25259IdentityPoolId"}},
+                              "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": "authenticated"}
+                            }
                         }
                     ]
                 }
             }
         },
+     
     
         "membersGroup": {
           "Type" : "AWS::Cognito::UserPoolGroup",
           "Properties" : {
               "GroupName" : "members",
               "Precedence" : 3,
+              
               "RoleArn" : {
                 "Fn::GetAtt": [
                     "membersGroupRole",
                     "Arn"
                 ]
               },
+              
               "UserPoolId" : {
                 "Ref": "authroninfleetviewfef25259fef25259UserPoolId"
               } 
             }
         },
+        
         "membersGroupRole": {
             "Type": "AWS::IAM::Role",
             "Properties": {
@@ -170,12 +191,18 @@
                             "Principal": {
                                 "Federated": "cognito-identity.amazonaws.com"
                             },
-                            "Action": "sts:AssumeRoleWithWebIdentity"
+                            "Action": "sts:AssumeRoleWithWebIdentity",
+                            "Condition": {
+                              "StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref":"authroninfleetviewfef25259fef25259IdentityPoolId"}},
+                              "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": "authenticated"}
+                            }
                         }
                     ]
                 }
             }
         },
+     
+    
     
         "LambdaExecutionRole": {
             "Type": "AWS::IAM::Role",
@@ -371,7 +398,9 @@
             },
             "DependsOn": ["RoleMapFunction"]
         }
+   
     },
+    
     "Outputs": {
       
         "adminsGroupRole": {
@@ -408,4 +437,5 @@
         
       
     }
+    
 }

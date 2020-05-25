@@ -10,17 +10,6 @@ Parameters:
   
   
   
-  
-  functionroninfleetviewfef25259fef25259PreSignupArn: 
-    Type: String
-    Default: functionroninfleetviewfef25259fef25259PreSignupArn
-  
-  functionroninfleetviewfef25259fef25259PreSignupName: 
-    Type: String
-    Default: functionroninfleetviewfef25259fef25259PreSignupName
-  
-  
-  
 
     
   identityPoolName:
@@ -168,21 +157,7 @@ Resources:
     UpdateReplacePolicy: Retain
     Properties:
       UserPoolName: !If [ShouldNotCreateEnvResources, !Ref userPoolName, !Join ['',[!Ref userPoolName, '-', !Ref env]]]
-      
-      
-      LambdaConfig:
-        
-        
-        
-        
-        
-        
-        
-          PreSignUp: !Ref functionroninfleetviewfef25259fef25259PreSignupArn
-        
-        
-        
-      
+
       
       AutoVerifiedAttributes: !Ref autoVerifiedAttributes
       
@@ -210,15 +185,6 @@ Resources:
     
     
   
-  
-  UserPoolPreSignupLambdaInvokePermission: 
-    Type: "AWS::Lambda::Permission"
-    DependsOn: UserPool
-    Properties: 
-      Action: "lambda:invokeFunction"
-      Principal: "cognito-idp.amazonaws.com"
-      FunctionName: !Ref functionroninfleetviewfef25259fef25259PreSignupName
-      SourceArn: !GetAtt UserPool.Arn
   
    
     
