@@ -19,17 +19,7 @@
         "roninfleetviewfef25259fef25259": {
             "service": "Cognito",
             "providerPlugin": "awscloudformation",
-            "dependsOn": [
-                {
-                    "category": "function",
-                    "resourceName": "roninfleetviewfef25259fef25259PreSignup",
-                    "triggerProvider": "Cognito",
-                    "attributes": [
-                        "Arn",
-                        "Name"
-                    ]
-                }
-            ]
+            "dependsOn": []
         }
     },
     "function": {
@@ -48,11 +38,6 @@
             ]
         },
         "roninfleetviewf3a46883": {
-            "service": "Lambda",
-            "providerPlugin": "awscloudformation",
-            "build": true
-        },
-        "roninfleetviewfef25259fef25259PreSignup": {
             "service": "Lambda",
             "providerPlugin": "awscloudformation",
             "build": true
